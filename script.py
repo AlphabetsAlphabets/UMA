@@ -38,7 +38,7 @@ class Player:
         select = input("Reference video by number: ")
         vidLink = videos[int(index) - 1]['href']
 
-        self.replay = self.driver.get(f"https://www.youtube.com{vidLink}")
+        self.replay_link = f"https://www.youtube.com{vidLink}"
 
     def PlayerControlGuide(self):
         print("To use the player control feature, go ahead and use mnemonics. Currently available features are: ")
@@ -56,9 +56,9 @@ class Player:
     # Player control code begins here.
 
     def replay(self):
-        self.driver.get(self.replay)
+        self.driver.get(self.replay_link)
 
-    def playerControl(self):
+    def PlayerControl(self):
         command = input("Input commands: ").lower()
 
         if command == "p": # Play, Pause mechanism
