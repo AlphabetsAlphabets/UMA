@@ -1,4 +1,4 @@
-#UMA (Untitled Media App)
+# UMA (Untitled Media App)
 The purpose of UMA is to go around those pesky spotify ad barriers, that will disrupt the user experience. Everything will be done through the terminal as I am __terrible__ at graphic design.
 
 I will accept any and all help, so feel free to dm me at discord. My tag is: 叶家煌(Jia Hong)#8464.
