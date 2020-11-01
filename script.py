@@ -42,9 +42,8 @@ class Player:
         for index, video in enumerate(videos, start=1):
            print(f"{index}. {video['title']}")
 
-        select = input("Reference video by number: ")
-        index = int(index)
-        vidLink = videos[index - 1]['href']
+        select = int(input("Reference video by number: "))
+        vidLink = videos[select - 1]['href']
 
         self.driver.get(f"https://www.youtube.com/{vidLink}")
         self.replay_link = f"https://www.youtube.com/{vidLink}"
