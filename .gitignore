@@ -1,2 +1,6 @@
 ghostery.crx
 use.py
+test.py
+__pycache__
+debug.txt
+debug.log
