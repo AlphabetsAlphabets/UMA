@@ -5,7 +5,10 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.options import Options
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import ElementNotInteractableException
+
 from media_downloader import Media
 from bs4 import BeautifulSoup as BS
 
@@ -13,15 +16,21 @@ class Player:
     ghostery = "D:\\Coding\\python\\web\\WebPlayer\\ghostery.xpi"
     opts = Options()
     opts.headless = True
-    driver = webdriver.Firefox(options=opts)
+    driver = webdriver.Firefox()
     driver.install_addon(ghostery, temporary=False)
 
-    sleep(1.5)
+    sleep(0.5)
     print("Starting session.")
 
-    driver.switch_to_window(driver.window_handles[1])
-    driver.close()
-    driver.switch_to_window(driver.window_handles[0])
+    while True:
+        try:
+            driver.switch_to_window(driver.window_handles[1])
+            driver.close()
+            driver.switch_to_window(driver.window_handles[0])
+            break
+
+        except:
+            continue
 
     def init(self):
         pass
@@ -52,13 +61,12 @@ class Player:
 
         select = int(input("Reference video by number: "))
         vidLink = videos[select - 1]['href']
-
-        self.driver.get(f"https://www.youtube.com/{vidLink}")
+        self.link = f"https://www.youtube.com{vidLink}"
+        self.driver.get(self.link)
         sleep(1)
         try:
             screen = self.driver.find_element(By.XPATH, "/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div")
             screen.click()
-            self.replay_link = f"https://www.youtube.com/{vidLink}"
 
         except ElementNotInteractableException as e:
             print("Unable to play this video due to age restrictions.")
@@ -76,7 +84,7 @@ class Player:
     # Player control code begins here.
 
     def Replay(self):
-        self.driver.get(self.replay_link)
+        self.driver.get(self.link)
 
     def PlayerControl(self):
         command = input("Input commands: ").lower()
@@ -102,5 +110,5 @@ class Player:
             else:
                 check = False
 
-            M = Media(video=self.replay_link, mp3=check)
+            M = Media(video=self.link, mp3=check)
             M.download()

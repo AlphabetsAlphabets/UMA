@@ -5,6 +5,7 @@ use.py
 media_downloader.py
 
 __pycache__
+media
 
 debug.log
 geckodriver.log
