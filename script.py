@@ -1,18 +1,27 @@
 from time import sleep
+import sys
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.options import Options
-
+from selenium.webdriver.firefox.options import Options
+from selenium.common.exceptions import ElementNotInteractableException
+from media_downloader import Media
 from bs4 import BeautifulSoup as BS
 
 class Player:
-    ghostery = "D:\\Coding\\python\\web\\WebPlayer\\ghostery.crx"
+    ghostery = "D:\\Coding\\python\\web\\WebPlayer\\ghostery.xpi"
     opts = Options()
-    opts.add_extension(ghostery)
-    # opts.add_argument("--headless")
-    driver = webdriver.Chrome(options=opts)
+    opts.headless = True
+    driver = webdriver.Firefox(options=opts)
+    driver.install_addon(ghostery, temporary=False)
+
+    sleep(1.5)
+    print("Starting session.")
+
+    driver.switch_to_window(driver.window_handles[1])
+    driver.close()
+    driver.switch_to_window(driver.window_handles[0])
 
     def init(self):
         pass
@@ -23,12 +32,11 @@ class Player:
         if " " in video:
             term = video.split(" ")
             term = "+".join(term)
-            self.url = f"https://www.youtube.com/results?search_query={video}"
+            self.url = f"https://www.youtube.com/results?search_query={term}"
 
         else:
-            self.url = f"https://www.youtube.com/results?search_query={video}"
+            self.url = f"https://www.youtube.com/results?search_query={term}"
 
-        sleep(0.8)
         self.driver.get(self.url)
         sleep(0.5)
 
@@ -46,7 +54,15 @@ class Player:
         vidLink = videos[select - 1]['href']
 
         self.driver.get(f"https://www.youtube.com/{vidLink}")
-        self.replay_link = f"https://www.youtube.com/{vidLink}"
+        sleep(1)
+        try:
+            screen = self.driver.find_element(By.XPATH, "/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div")
+            screen.click()
+            self.replay_link = f"https://www.youtube.com/{vidLink}"
+
+        except ElementNotInteractableException as e:
+            print("Unable to play this video due to age restrictions.")
+            self.Play()
 
     def PlayerControlGuide(self):
         print("To use the player control feature, go ahead and use mnemonics. Currently available features are: ")
@@ -60,7 +76,7 @@ class Player:
     # Player control code begins here.
 
     def Replay(self):
-        self.driver.get(replay_link)
+        self.driver.get(self.replay_link)
 
     def PlayerControl(self):
         command = input("Input commands: ").lower()
@@ -73,8 +89,18 @@ class Player:
             self.Play()
 
         elif command == "r":
-            self.replay()
+            self.Replay()
 
         elif command == "q":
             self.driver.quit()
             sys.exit()
+
+        elif command == "dl":
+            check = input("Do you want an .mp3 of this? Y/n: ").lower()
+            if check == "y":
+                check = True
+            else:
+                check = False
+
+            M = Media(video=self.replay_link, mp3=check)
+            M.download()

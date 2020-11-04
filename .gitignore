@@ -1,7 +1,12 @@
+ghostery.xpi
 ghostery.crx
+
 use.py
-test.py
+media_downloader.py
+
 __pycache__
-debug.txt
+
 debug.log
+geckodriver.log
+
 issue.md
