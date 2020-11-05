@@ -16,7 +16,7 @@ class Player:
     ghostery = os.getcwd() + "\\ghostery.xpi"
     opts = Options()
     opts.headless = True
-    driver = webdriver.Firefox()
+    driver = webdriver.Firefox(options=opts)
     driver.install_addon(ghostery, temporary=False)
 
     sleep(0.5)
