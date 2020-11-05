@@ -7,7 +7,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.options import Options
 # from selenium.webdriver.support.ui import WebDriverWait
 # from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import ElementNotInteractableException
 
 from media_downloader import Media
 from bs4 import BeautifulSoup as BS
@@ -16,7 +15,7 @@ class Player:
     ghostery = "D:\\Coding\\python\\web\\WebPlayer\\ghostery.xpi"
     opts = Options()
     opts.headless = True
-    driver = webdriver.Firefox()
+    driver = webdriver.Firefox(options=opts)
     driver.install_addon(ghostery, temporary=False)
 
     sleep(0.5)
@@ -32,10 +31,7 @@ class Player:
         except:
             continue
 
-    def init(self):
-        pass
-
-    def Play(self):
+    def init(self, video):
         video = input("Channel/Video: ")
 
         if " " in video:
@@ -46,6 +42,7 @@ class Player:
         else:
             self.url = f"https://www.youtube.com/results?search_query={term}"
 
+    def Play(self):
         self.driver.get(self.url)
         sleep(0.5)
 
@@ -56,10 +53,13 @@ class Player:
 
         videos = soup.find_all('a', class_=videoClass)
 
+        print("=="*20)
         for index, video in enumerate(videos, start=1):
            print(f"{index}. {video['title']}")
 
         select = int(input("Reference video by number: "))
+        print("=="*20)
+
         vidLink = videos[select - 1]['href']
         self.link = f"https://www.youtube.com{vidLink}"
         self.driver.get(self.link)
@@ -68,29 +68,59 @@ class Player:
             screen = self.driver.find_element(By.XPATH, "/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div")
             screen.click()
 
-        except ElementNotInteractableException as e:
-            print("Unable to play this video due to age restrictions.")
+        except Exception as e:
+            print(e)
             self.Play()
 
-    def PlayerControlGuide(self):
-        print("To use the player control feature, go ahead and use mnemonics. Currently available features are: ")
-        print("Pause, Play, and search for another video entirely.")
-        print("Use mnemonics, P for pause, P again to unpause, and AV for another video. It isn't case sensitive.")
-        print("So lower case p will have the same effect as uppercase p.")
-        print("--"*20)
+    def NextVideos(self):
+        source = self.driver.execute_script("return document.documentElement.outerHTML")
+        soup = BS(source, "lxml")
 
-        print("Full list available at: ")
+        try:
+            UpNext = soup.find_all("div", class_="yt-simple-endpoint style-scope ytd-playlist-panel-video-renderer")
+            print("=="*20)
+            for index, item in enumerate(UpNext):
+                print(f"{index}. {item}")
+
+            print("=="*20)
+
+            select = input("Reference video by number: ")
+            vidLink = UpNext[select - 1]['href']
+            self.link = f"https://www.youtube.com{vidLink}"
+            self.Play()
+            self.side = True
+
+        except:
+            UpNext = soup.find_all("div", class_="yt-simple-endpoint inline-block style-scope ytd-thumbnail")
+            for index, item in enumerate(UpNext):
+                print(f"{index}. {item}")
+
+            print("=="*20)
+
+            select = input("Reference video by number: ")
+            vidLink = UpNext[select - 1]['href']
+            self.link = f"https://www.youtube.com{vidLink}"
+
+        self.PlayerControl()
 
     # Player control code begins here.
-
     def Replay(self):
         self.driver.get(self.link)
+        while True:
+            try:
+                screen_path = "/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div"
+                screen = self.driver.find_element(By.XPATH, screen_path)
+                screen.click()
+                break
+            except:
+                continue
 
     def PlayerControl(self):
         command = input("Input commands: ").lower()
 
         if command == "p": # Play, Pause mechanism
-            screen = self.driver.find_element(By.XPATH, "/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div")
+            screen_path = "/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div"
+            screen = self.driver.find_element(By.XPATH, screen_path)
             screen.click()
 
         elif command == "av":
@@ -104,7 +134,7 @@ class Player:
             sys.exit()
 
         elif command == "dl":
-            check = input("Do you want an .mp3 of this? Y/n: ").lower()
+            check = input("Do you want an .mp3 of this? y/n: ").lower()
             if check == "y":
                 check = True
             else:
@@ -112,3 +142,6 @@ class Player:
 
             M = Media(video=self.link, mp3=check)
             M.download()
+
+        elif command == "nv":
+            self.NextVideos()
