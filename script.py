@@ -1,5 +1,5 @@
 from time import sleep
-import sys
+import sys, os
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -13,7 +13,7 @@ from media_downloader import Media
 from bs4 import BeautifulSoup as BS
 
 class Player:
-    ghostery = "D:\\Coding\\python\\web\\WebPlayer\\ghostery.xpi"
+    ghostery = os.getcwd() + "\\ghostery.xpi"
     opts = Options()
     opts.headless = True
     driver = webdriver.Firefox()
@@ -71,15 +71,6 @@ class Player:
         except ElementNotInteractableException as e:
             print("Unable to play this video due to age restrictions.")
             self.Play()
-
-    def PlayerControlGuide(self):
-        print("To use the player control feature, go ahead and use mnemonics. Currently available features are: ")
-        print("Pause, Play, and search for another video entirely.")
-        print("Use mnemonics, P for pause, P again to unpause, and AV for another video. It isn't case sensitive.")
-        print("So lower case p will have the same effect as uppercase p.")
-        print("--"*20)
-
-        print("Full list available at: ")
 
     # Player control code begins here.
 

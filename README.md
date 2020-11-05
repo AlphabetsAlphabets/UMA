@@ -9,8 +9,10 @@ I will accept any and all help, so feel free to dm me at discord. My tag is: 叶
 Documentation located [here](https://github.com/YJH16120/UMA/blob/main/docs.md)
 
 # Using UMA
-UMA has a mnemonic based player system. Where FF5 would translate to Fast Forward 5 seconds, FF10 is Fast Forward 10 seconds and so on.
-The mnemonic system, is **currently just an idea**, P is for both Pause and Play depending on the situation.
+All you need to make sure. Is to have all the files downloaded. And you need the Firefox web browser. As well as the `ghostery.xpi` which will be provided.
+
+Install all required files in `requirements.txt`. Run the python file `use.py` in terminal.
+
 
 # Why use UMA?
 UMA has the ability to download any media you are currenly playing. Such as a song you really like. Just enter "download" in the terminal
@@ -18,6 +20,13 @@ and it will download the desired file into a directory called "media".
 
 # UMA's development
 UMA is still in development, as most things are still unusable. Currently working features are as follows:
-1. A working player system,
-2. Choosing another video,
-3. Replaying the video.
+1. Displaying videos/content that is up next. Similar to YouTube where there is a bar, with all the other videos you can choose from.
+
+### Known limitations
+1. Unable to display the following content available. Similar to YouTube, where there is a column with all other videos you can possible choose from.
+
+2. Unable to skip to a specific portion of the video. (This hasn't been an issue for me yet, so feel free to create an issue when needed)
+
+3. Unable to skip straight to next video, once it has ended (When that auto-play button shows up)
+
+4. Unable to skip straight to next video, on command.
