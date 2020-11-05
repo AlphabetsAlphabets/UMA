@@ -5,8 +5,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.options import Options
-# from selenium.webdriver.support.ui import WebDriverWait
-# from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 from media_downloader import Media
 from bs4 import BeautifulSoup as BS
@@ -17,6 +17,8 @@ class Player:
     opts.headless = True
     driver = webdriver.Firefox(options=opts)
     driver.install_addon(ghostery, temporary=False)
+
+    self.AutoPlay = False
 
     sleep(0.5)
     print("Starting session.")
@@ -103,6 +105,22 @@ class Player:
 
         self.PlayerControl()
 
+    def SkipToNextVideo(self):
+        source = self.driver.execute_script("return document.documentElement.outerHTML")
+        soup = BS(source, "lxml")
+        duration = soup.find("span", class_="ytp-time-duration")
+        duration = duration.split(":")
+        duration = ".".join(duration)
+        duration = float(duration) * 60 + 0.5
+
+        try:
+            autoplay = "ytp-upnext-autoplay-icon"
+            element = WebDriverWait(self.driver, duration+0.5)
+            element.until(EC.presence_of_element_located((By.CLASS_NAME, autoplay)))
+            self.PlayerControl()
+        except:
+            pass
+
     # Player control code begins here.
     def Replay(self):
         self.driver.get(self.link)
@@ -118,30 +136,36 @@ class Player:
     def PlayerControl(self):
         command = input("Input commands: ").lower()
 
-        if command == "p": # Play, Pause mechanism
-            screen_path = "/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div"
-            screen = self.driver.find_element(By.XPATH, screen_path)
-            screen.click()
+        if not self.autoplay:
+            if command == "p": # Play, Pause mechanism
+                screen_path = "/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div"
+                screen = self.driver.find_element(By.XPATH, screen_path)
+                screen.click()
 
-        elif command == "av":
-            self.Play()
+            elif command == "av":
+                self.Play()
 
-        elif command == "r":
-            self.Replay()
+            elif command == "r":
+                self.Replay()
 
-        elif command == "q":
-            self.driver.quit()
-            sys.exit()
+            elif command == "q":
+                self.driver.quit()
+                sys.exit()
 
-        elif command == "dl":
-            check = input("Do you want an .mp3 of this? y/n: ").lower()
-            if check == "y":
-                check = True
-            else:
-                check = False
+            elif command == "dl":
+                check = input("Do you want an .mp3 of this? y/n: ").lower()
+                if check == "y":
+                    check = True
+                else:
+                    check = False
 
-            M = Media(video=self.link, mp3=check)
-            M.download()
+                M = Media(video=self.link, mp3=check)
+                M.download()
 
-        elif command == "nv":
-            self.NextVideos()
+            elif command == "nv":
+                self.NextVideos()
+        else:
+            print("You are able to skip to the next video.")
+            select = input("Would you like to? y/n: ").lower()
+            if select == 'y':
+                pass
