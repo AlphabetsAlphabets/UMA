@@ -10,3 +10,14 @@ debug.log
 geckodriver.log
 
 issue.md
+
+# GUI
+GUI/__pycache__/
+GUI/geckodriver.log
+GUI/ghostery.xpi
+GUI/media_downloader.py
+GUI/script.py
+GUI/main.py
+GUI/source.py
+GUI/use.py
+

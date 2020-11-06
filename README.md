@@ -1,3 +1,6 @@
+# Announcements
+Production of UMA will halt to a considerable ammount. Due to my inability to build GUI applications, I have decided to take some time to learn exactly that. Updates of the GUI will be available in the GUI branch under the folder [__GUI__](https://github.com/YJH16120/UMA/tree/GUI/GUI).
+
 # Warnings
 Since you are **not** supposed to do this. It means that this is of course **illegal** use this at your own risk. I will not be responsible for anything that happens to you due to your use of this application, and will not be held accountable
 
