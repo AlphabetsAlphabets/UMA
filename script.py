@@ -1,18 +1,24 @@
+# Built in packages
 from time import sleep
 import sys, os
 from datetime import datetime
-import sys
+import sys, os
+
+# Selenium, and Helium
+from helium import *
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains as AC
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains as AC
 
-from media_downloader import Media
 from bs4 import BeautifulSoup as BS
+
+# Custom packages
+from media_downloader import Media
 
 class Player:
     ghostery = os.getcwd() + "\\ghostery.xpi"
