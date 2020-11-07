@@ -1,10 +1,16 @@
 ghostery.crx
 
+<<<<<<< HEAD
+=======
+use.py
+dev.py
+>>>>>>> feature/next-video
 media_downloader.py
 dev.py
 
 __pycache__
 media
+GUI
 
 debug.log
 geckodriver.log
