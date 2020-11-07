@@ -98,45 +98,6 @@ class Player:
                 else:
                     guard += 1
 
-    def NextVideos(self):
-        source = self.driver.execute_script("return document.documentElement.outerHTML")
-        soup = BS(source, "lxml")
-
-        try:
-            UpNext = soup.find_all("div", class_="yt-simple-endpoint style-scope ytd-playlist-panel-video-renderer")
-            print("=="*20)
-            for index, item in enumerate(UpNext):
-                print(f"{index}. {item}")
-
-            print("=="*20)
-
-            select = input("Reference video by number: ")
-            vidLink = UpNext[select - 1]['href']
-            self.link = f"https://www.youtube.com{vidLink}"
-            self.Play()
-            self.side = True
-
-        except:
-            UpNext = soup.find_all("div", class_="yt-simple-endpoint inline-block style-scope ytd-thumbnail")
-            for index, item in enumerate(UpNext):
-                print(f"{index}. {item}")
-
-    def SkipToNextVideo(self):
-        source = self.driver.execute_script("return document.documentElement.outerHTML")
-        soup = BS(source, "lxml")
-        duration = soup.find("span", class_="ytp-time-duration")
-        duration = duration.split(":")
-        duration = ".".join(duration)
-        duration = float(duration) * 60 + 0.5
-
-        try:
-            autoplay = "ytp-upnext-autoplay-icon"
-            element = WebDriverWait(self.driver, duration+0.5)
-            element.until(EC.presence_of_element_located((By.CLASS_NAME, autoplay)))
-            self.PlayerControl()
-        except:
-            pass
-
     # Player control code begins here.
     def Replay(self):
         self.driver.get(self.link)
