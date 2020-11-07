@@ -44,112 +44,59 @@ class Player:
         pass
 
     def Play(self):
-        try:
-            self.link, boolean = self.confirm
-            self.driver.get(self.link)
+        video = input("Video title/link: ")
 
-        except:
-            video = input("Video title/link: ")
+        if " " in video:
+            self.term = video.split(" ")
+            self.term = "+".join(self.term)
+            self.url = f"https://www.youtube.com/results?search_query={self.term}"
 
-            if " " in video:
-                self.term = video.split(" ")
-                self.term = "+".join(self.term)
-                self.url = f"https://www.youtube.com/results?search_query={self.term}"
+        else:
+            self.url = f"https://www.youtube.com/results?search_query={self.term}"
 
-            else:
-                self.url = f"https://www.youtube.com/results?search_query={self.term}"
+        self.driver.get(self.url)
+        sleep(0.5)
 
-            self.driver.get(self.url)
-            sleep(0.5)
+        source = self.driver.execute_script("return document.documentElement.outerHTML")
+        soup = BS(source, "lxml")
 
-            source = self.driver.execute_script("return document.documentElement.outerHTML")
-            soup = BS(source, "lxml")
+        videoClass = "yt-simple-endpoint style-scope ytd-video-renderer"
 
-            videoClass = "yt-simple-endpoint style-scope ytd-video-renderer"
+        videos = soup.find_all('a', class_=videoClass)
 
-            videos = soup.find_all('a', class_=videoClass)
+        print("=="*20)
+        for index, video in enumerate(videos, start=1):
+           print(f"{index}. {video['title']}")
 
-            print("=="*20)
-            for index, video in enumerate(videos, start=1):
-               print(f"{index}. {video['title']}")
+        print("=="*20)
+        select = int(input("Reference video by number: "))
 
-            print("=="*20)
-            select = int(input("Reference video by number: "))
+        vidLink = videos[select - 1]['href']
+        self.link = f"https://www.youtube.com{vidLink}"
+        self.driver.get(self.link)
 
-            vidLink = videos[select - 1]['href']
-            self.link = f"https://www.youtube.com{vidLink}"
-            self.driver.get(self.link)
+        VID = videos[select - 1]['title']
 
-            VID = videos[select - 1]['title']
+        print("-" * (int(len(VID)) + len("Currently listening to: ")))
+        print(f"Currently listening to: {VID}")
+        print("-" * (int(len(VID)) + len("Currently listening to: ")))
 
-            print("-" * (int(len(VID)) + len("Currently listening to: ")))
-            print(f"Currently listening to: {VID}")
-            print("-" * (int(len(VID)) + len("Currently listening to: ")))
+        sleep(0.7)
+        guard = 0
+        while guard <= 80:
+            try:
+                action = AC(self.driver)
+                action.send_keys("k")
+                action.perform()
+                break
 
-            sleep(0.7)
-            guard = 0
-            while guard <= 80:
-                try:
-                    action = AC(self.driver)
-                    action.send_keys("k")
-                    action.perform()
+            except Exception as e:
+                if guard >= 50 and guard <= 70:
+                    screen = self.driver.find_element(By.XPATH, "/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div")
+                    screen.click()
                     break
-
-                except Exception as e:
-                    if guard >= 50 and guard <= 70:
-                        screen = self.driver.find_element(By.XPATH, "/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div")
-                        screen.click()
-                        break
-                    else:
-                        guard += 1
-
-    def NextVideos(self):
-        source = self.driver.execute_script("return document.documentElement.outerHTML")
-        soup = BS(source, "lxml")
-
-        try:
-            # Side bar; With playlist
-            UpNext = soup.find_all("div", class_="yt-simple-endpoint style-scope ytd-playlist-panel-video-renderer")
-            print("=="*20)
-            for index, item in enumerate(UpNext):
-                print(f"{index}. {item}")
-
-            print("=="*20)
-
-            select = input("Reference video by number: ")
-            vidLink = UpNext[select - 1]['href']
-            self.control = (f"https://www.youtube.com{vidLink}", True)
-            self.Play()
-
-        except:
-            # Side bar; No Playlist
-            UpNext = soup.find_all("div", class_="yt-simple-endpoint inline-block style-scope ytd-thumbnail")
-            for index, item in enumerate(UpNext):
-                print(f"{index}. {item}")
-
-            print("=="*20)
-
-            select = input("Reference video by number: ")
-            vidLink = UpNext[select - 1]['href']
-            self.link = f"https://www.youtube.com{vidLink}"
-
-        self.PlayerControl()
-
-    def SkipToNextVideo(self):
-        source = self.driver.execute_script("return document.documentElement.outerHTML")
-        soup = BS(source, "lxml")
-        duration = soup.find("span", class_="ytp-time-duration")
-        duration = duration.split(":")
-        duration = ".".join(duration)
-        duration = float(duration) * 60 + 0.5
-
-        try:
-            autoplay = "ytp-upnext-autoplay-icon"
-            element = WebDriverWait(self.driver, duration+0.5)
-            element.until(EC.presence_of_element_located((By.CLASS_NAME, autoplay)))
-            self.PlayerControl()
-        except:
-            pass
+                else:
+                    guard += 1
 
     # Player control code begins here.
     def Replay(self):
