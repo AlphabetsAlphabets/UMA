@@ -5,7 +5,7 @@ from datetime import datetime
 import sys, os
 
 # Selenium, and Helium
-from helium import *
+# from helium import *
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -40,19 +40,17 @@ class Player:
         except:
             continue
 
-    def __init__(self):
-        pass
+    def __init__(self, video):
+        self.video = video
 
     def Play(self):
-        video = input("Video title/link: ")
-
-        if " " in video:
-            self.term = video.split(" ")
+        if " " in self.video:
+            self.term = self.video.split(" ")
             self.term = "+".join(self.term)
             self.url = f"https://www.youtube.com/results?search_query={self.term}"
 
         else:
-            self.url = f"https://www.youtube.com/results?search_query={self.term}"
+            self.url = f"https://www.youtube.com/results?search_query={self.video}"
 
         self.driver.get(self.url)
         sleep(0.5)
@@ -62,20 +60,27 @@ class Player:
 
         videoClass = "yt-simple-endpoint style-scope ytd-video-renderer"
 
-        videos = soup.find_all('a', class_=videoClass)
+        self.videos = soup.find_all('a', class_=videoClass)
+        self.Output()
 
+    def Output(self):
         print("=="*20)
-        for index, video in enumerate(videos, start=1):
+        for index, video in enumerate(self.videos, start=1):
            print(f"{index}. {video['title']}")
 
         print("=="*20)
-        select = int(input("Reference video by number: "))
+        # select = int(input("Reference video by number: "))
 
-        vidLink = videos[select - 1]['href']
+    def ReadFromCommand(self):
+        with open("commands.txt", 'r') as f:
+            select = f.readlines()
+            select = int(select[0])
+
+        vidLink = self.videos[select - 1]['href']
         self.link = f"https://www.youtube.com{vidLink}"
         self.driver.get(self.link)
 
-        VID = videos[select - 1]['title']
+        VID = self.videos[select - 1]['title']
 
         print("-" * (int(len(VID)) + len("Currently listening to: ")))
         print(f"Currently listening to: {VID}")
