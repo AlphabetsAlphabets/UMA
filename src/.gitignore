@@ -4,8 +4,8 @@ dev.py
 media_downloader.py
 edit.py
 
-__pycache__
-media
+__pycache__/
+media/
 GUI
 
 commands.txt
