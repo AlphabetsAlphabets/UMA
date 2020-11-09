@@ -1,8 +1,7 @@
 # Built in packages
+import sys, os
 from time import sleep
-import sys, os
 from datetime import datetime
-import sys, os
 
 # Selenium, and Helium
 # from helium import *
@@ -69,22 +68,26 @@ class Player:
            print(f"{index}. {video['title']}")
 
         print("=="*20)
-        # select = int(input("Reference video by number: "))
 
     def ReadFromCommand(self):
         with open("commands.txt", 'r') as f:
             select = f.readlines()
-            select = int(select[0])
 
-        vidLink = self.videos[select - 1]['href']
-        self.link = f"https://www.youtube.com{vidLink}"
+        try:
+            PlayerCheck = select[1]
+            if PlayerCheck == "PlayerControl":
+                pass
+        except IndexError:
+            try:
+                self.vidLink = self.videos[int(select[0].strip("\n")) - 1]['href']
+
+            except ValueError:
+                print(select[0].strip("\n"), "is not a number.")
+                self.driver.quit()
+                sys.exit()
+
+        self.link = f"https://www.youtube.com{self.vidLink}"
         self.driver.get(self.link)
-
-        VID = self.videos[select - 1]['title']
-
-        print("-" * (int(len(VID)) + len("Currently listening to: ")))
-        print(f"Currently listening to: {VID}")
-        print("-" * (int(len(VID)) + len("Currently listening to: ")))
 
         sleep(0.7)
         guard = 0
@@ -116,7 +119,10 @@ class Player:
                 continue
 
     def PlayerControl(self):
-        command = input("Input commands: ").lower()
+        with open("commands.txt", "r") as f:
+            command = f.readlines()
+
+        command = command[0]
 
         if command == "p": # Play, Pause mechanism
             action = AC(self.driver)
