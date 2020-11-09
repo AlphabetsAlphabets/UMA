@@ -1,12 +1,7 @@
 ghostery.crx
 
-<<<<<<< HEAD
-=======
-use.py
 dev.py
->>>>>>> feature/next-video
 media_downloader.py
-dev.py
 
 __pycache__
 media
@@ -18,12 +13,4 @@ geckodriver.log
 issue.md
 
 # GUI
-GUI/__pycache__/
-GUI/geckodriver.log
-GUI/ghostery.xpi
-GUI/media_downloader.py
-GUI/script.py
-GUI/main.py
-GUI/source.py
-GUI/use.py
 
