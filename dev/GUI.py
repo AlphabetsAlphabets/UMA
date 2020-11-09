@@ -3,11 +3,10 @@ from edit import Player
 import sys
 
 class Application(Frame):
-    self.count = 0
+    count = 0
     def __init__(self, master=None):
         Frame.__init__(self, master=None)
         self.master = master
-        self.text = "Nothing"
 
         self.Window()
 
@@ -40,7 +39,6 @@ class Application(Frame):
         ReferenceByNumber.place(x=50, y=90)
 
         self.RefByNum = Entry(self.master, borderwidth=3)
-        self.RefByNum.insert(0, "Reference by number")
         self.RefByNum.place(x=170, y=90)
 
         ConfSelection = Button(self.master, text="Press to confirm", command=self.GetText)
@@ -55,26 +53,28 @@ class Application(Frame):
         if argument is None:
             with open('commands.txt', 'w') as f:
                 f.write(self.text)
-
             self.P.ReadFromCommand()
+
         elif argument is not None:
             if argument == "p" and self.count == 0:
-                self.PlayBtn.config(text="Pause")
-                self.count += 1
-
-            elif arguemtn == "p" and self.count == 1:
                 self.PlayBtn.config(text="Play")
+                self.count += 1
+                self.P.ReadFromCommand()
+
+            elif argument == "p" and self.count == 1:
+                self.PlayBtn.config(text="Pause")
                 self.count -= 1
+                self.P.ReadFromCommand()
 
             else:
                 with open('commands.txt', 'w') as f:
                     f.write(argument + "\n")
                     f.write("PlayerControl")
 
-            self.P.ReadFromCommand()
+                self.P.ReadFromCommand()
 
     def CreateControlButton(self):
-        self.PlayBtn = Button(self.master, text="Play", fg="green", command=lambda: self.WriteToCommand("p"))
+        self.PlayBtn = Button(self.master, text="Pause", fg="green", command=lambda: self.WriteToCommand("p"))
         self.PlayBtn.place(x=50, y=120)
 
         self.PlayReplay = Button(self.master, text="Replay", fg="green", command=lambda: self.WriteToCommand("r"))

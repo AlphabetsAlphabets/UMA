@@ -9,5 +9,11 @@ media/
 src/media_downloader.py
 src/commands.txt
 
+dev/commands.txt
+dev/exit.py
+dev/intersection.txt
+dev/highway.py
+
+
 debug.log
 geckodriver.log
