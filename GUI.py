@@ -35,21 +35,6 @@ class Application(Frame):
 
         self.SelectVideo()
 
-    def CreateControlButton(self):
-        self.PlayBtn = Button(self.master, text="Play", fg="green", command=lambda: self.WriteToCommand("p"))
-        self.PlayBtn.place(x=50, y=120)
-
-        self.PlayReplay = Button(self.master, text="Replay", fg="green", command=lambda: self.WriteToCommand("r"))
-        self.PlayReplay.place(x=100, y=120)
-
-        self.PlayDownload = Button(self.master, text="Download", fg="green", command=lambda: self.WriteToCommand("dl"))
-        self.PlayDownload.place(x=160, y=120)
-
-    def GetText(self):
-        self.text = self.RefByNum.get()
-        self.WriteToCommand()
-        self.CreateControlButton()
-
     def SelectVideo(self):
         ReferenceByNumber = Label(self.master, text="Reference by number: ")
         ReferenceByNumber.place(x=50, y=90)
@@ -60,6 +45,11 @@ class Application(Frame):
 
         ConfSelection = Button(self.master, text="Press to confirm", command=self.GetText)
         ConfSelection.place(x=300, y=90)
+
+    def GetText(self):
+        self.text = self.RefByNum.get()
+        self.WriteToCommand()
+        self.CreateControlButton()
 
     def WriteToCommand(self, argument = None):
         if argument is None:
@@ -82,6 +72,16 @@ class Application(Frame):
                     f.write("PlayerControl")
 
             self.P.ReadFromCommand()
+
+    def CreateControlButton(self):
+        self.PlayBtn = Button(self.master, text="Play", fg="green", command=lambda: self.WriteToCommand("p"))
+        self.PlayBtn.place(x=50, y=120)
+
+        self.PlayReplay = Button(self.master, text="Replay", fg="green", command=lambda: self.WriteToCommand("r"))
+        self.PlayReplay.place(x=100, y=120)
+
+        self.PlayDownload = Button(self.master, text="Download", fg="green", command=lambda: self.WriteToCommand("dl"))
+        self.PlayDownload.place(x=160, y=120)
 
     def AbsoluteExit(self):
         self.P.AbsoluteExit()

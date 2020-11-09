@@ -3,8 +3,7 @@ import sys, os
 from time import sleep
 from datetime import datetime
 
-# Selenium, and Helium
-# from helium import *
+# Selenium
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
