@@ -1,18 +1,13 @@
-ghostery.crx
+ghostery.xpi
 
 dev.py
-src/media_downloader.py
 edit.py
 
 __pycache__/
 media/
-GUI
 
+src/media_downloader.py
 src/commands.txt
+
 debug.log
 geckodriver.log
-
-issue.md
-
-# GUI
-GUI.py
