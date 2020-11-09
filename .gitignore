@@ -2,6 +2,7 @@ ghostery.crx
 
 dev.py
 media_downloader.py
+edit.py
 
 __pycache__
 media
