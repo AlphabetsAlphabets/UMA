@@ -1,15 +1,18 @@
 ghostery.crx
 
 dev.py
-media_downloader.py
+src/media_downloader.py
+edit.py
 
-__pycache__
-media
+__pycache__/
+media/
 GUI
 
-commands.txt
+src/commands.txt
 debug.log
 geckodriver.log
 
 issue.md
 
+# GUI
+GUI.py
