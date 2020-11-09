@@ -12,6 +12,8 @@ Documentation located [here](https://github.com/YJH16120/UMA/blob/main/docs.md)
 All you need to make sure. Is to have all the files downloaded. And you need the Firefox web browser. As well as the `ghostery.xpi` which will be provided.
 Install all required files in `requirements.txt`. Run the python file `use.py` in terminal.
 
+A video demonstration can be found [here](https://youtu.be/E6Tb2xtnc3o), this example does not have a GUI working with it. A GUI demonstration will be made soon after.
+
 # Why use UMA?
 UMA has the ability to download any media you are currenly playing. Such as a song you really like. Just enter "download" in the terminal
 and it will download the desired file into a directory called "media".
