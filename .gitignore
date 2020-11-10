@@ -8,6 +8,7 @@ media/
 src/media_downloader.py
 src/commands.txt
 
+dev/test.py
 dev/commands.txt
 dev/exit.py
 dev/intersection.txt

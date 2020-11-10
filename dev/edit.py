@@ -1,9 +1,10 @@
 # Built in packages
-import sys, os
 from time import sleep
+import sys, os
 from datetime import datetime
 
-# Selenium
+# Selenium, and Helium
+from helium import *
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -16,7 +17,7 @@ from selenium.webdriver.common.action_chains import ActionChains as AC
 from bs4 import BeautifulSoup as BS
 
 # Custom packages
-from media import Media
+from media_downloader import Media
 
 class Player:
     ghostery = os.getcwd() + "\\ghostery.xpi"
@@ -38,17 +39,19 @@ class Player:
         except:
             continue
 
-    def __init__(self, video):
-        self.video = video
+    def __init__(self):
+        pass
 
     def Play(self):
-        if " " in self.video:
-            self.term = self.video.split(" ")
+        video = input("Video title/link: ")
+
+        if " " in video:
+            self.term = video.split(" ")
             self.term = "+".join(self.term)
             self.url = f"https://www.youtube.com/results?search_query={self.term}"
 
         else:
-            self.url = f"https://www.youtube.com/results?search_query={self.video}"
+            self.url = f"https://www.youtube.com/results?search_query={self.term}"
 
         self.driver.get(self.url)
         sleep(0.5)
@@ -58,43 +61,41 @@ class Player:
 
         videoClass = "yt-simple-endpoint style-scope ytd-video-renderer"
 
-        self.videos = soup.find_all('a', class_=videoClass)
-        self.Output()
+        videos = soup.find_all('a', class_=videoClass)
 
-    def Output(self):
         print("=="*20)
-        for index, video in enumerate(self.videos, start=1):
+        for index, video in enumerate(videos, start=1):
            print(f"{index}. {video['title']}")
 
         print("=="*20)
+        select = int(input("Reference video by number: "))
 
-    def ReadFromCommand(self):
-        cmds = []
-        nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30']
-        PlayerCommands = ["p", "r", "dl"]
-
-        with open("commands.txt", 'r') as f:
-            for lines in f.readlines():
-                cmds.append(lines)
-
-            if cmds[0] in nums:
-                self.vidLink = self.videos[int(cmds[0].strip("\n")) - 1]['href']
-
-            elif cmds[0] in PlayerCommands:
-                self.cmds = cmds[0]
-                PlayerControl()
-
-            else:
-                print(f"{cmds[0]} is not a number.")
-
-        self.link = f"https://www.youtube.com{self.vidLink}"
+        vidLink = videos[select - 1]['href']
+        self.link = f"https://www.youtube.com{vidLink}"
         self.driver.get(self.link)
 
-        sleep(0.3)
+        VID = videos[select - 1]['title']
 
-        action = AC(self.driver)
-        action.send_keys("k")
-        action.perform()
+        print("-" * (int(len(VID)) + len("Currently listening to: ")))
+        print(f"Currently listening to: {VID}")
+        print("-" * (int(len(VID)) + len("Currently listening to: ")))
+
+        sleep(0.7)
+        guard = 0
+        while guard <= 80:
+            try:
+                action = AC(self.driver)
+                action.send_keys("k")
+                action.perform()
+                break
+
+            except Exception as e:
+                if guard >= 50 and guard <= 70:
+                    screen = self.driver.find_element(By.XPATH, "/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div")
+                    screen.click()
+                    break
+                else:
+                    guard += 1
 
     # Player control code begins here.
     def Replay(self):
@@ -109,7 +110,7 @@ class Player:
                 continue
 
     def PlayerControl(self):
-        commands = self.cmds
+        command = input("Input commands: ").lower()
 
         if command == "p": # Play, Pause mechanism
             action = AC(self.driver)

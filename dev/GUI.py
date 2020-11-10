@@ -1,6 +1,8 @@
+# Built in packages
 from tkinter import *
-from edit import Player
-import sys
+import sys, os
+
+# Custom packages
 
 class Application(Frame):
     count = 0
@@ -49,30 +51,6 @@ class Application(Frame):
         self.WriteToCommand()
         self.CreateControlButton()
 
-    def WriteToCommand(self, argument = None):
-        if argument is None:
-            with open('commands.txt', 'w') as f:
-                f.write(self.text)
-            self.P.ReadFromCommand()
-
-        elif argument is not None:
-            if argument == "p" and self.count == 0:
-                self.PlayBtn.config(text="Play")
-                self.count += 1
-                self.P.ReadFromCommand()
-
-            elif argument == "p" and self.count == 1:
-                self.PlayBtn.config(text="Pause")
-                self.count -= 1
-                self.P.ReadFromCommand()
-
-            else:
-                with open('commands.txt', 'w') as f:
-                    f.write(argument + "\n")
-                    f.write("PlayerControl")
-
-                self.P.ReadFromCommand()
-
     def CreateControlButton(self):
         self.PlayBtn = Button(self.master, text="Pause", fg="green", command=lambda: self.WriteToCommand("p"))
         self.PlayBtn.place(x=50, y=120)
@@ -96,4 +74,5 @@ try:
 
 except Exception as e:
     print(e)
+    App.AbsoluteExit()
     sys.exit()
