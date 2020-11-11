@@ -10,13 +10,24 @@ Documentation located [here](https://github.com/YJH16120/UMA/blob/main/docs.md)
 
 # Using UMA
 
+## Prerequisites
+1. Have python installed:
+If you don't have python download it [here](https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe). A note is that once you click this link, it will __immediately__ download python.exe.
+
+2. Have Firefox installed:
+Install the firefox browser if you haven't already, as this program uses firefox.
+
+3. Have ghostery.xpi:
+Go to the search bar in firefox and type in `about:support` and find the row that reads "Profile folder", and click the button "open folder". Then find the extensions folder,
+and find the file `firefox@ghostery.com.xpi` and rename it to `ghostery.xpi` keep the extension, unchanged.
+
 ### Instructions for the CLI version
-All you need to make sure. Is to have all the files downloaded. And you need the Firefox web browser. As well as the `ghostery.xpi` which will be provided.
-Install all required files in `requirements.txt`. Run the python file `use.py` in terminal.
+Navigate to the `src/CLI` folder, and make sure to `pip install -r requirements.txt` before hand. Move the `ghostery.xpi` file to `src/CLI`. Finally, run `script.py` with python: `py script.py` for
+UNIX/Linux run `python3 script.py`
 
 ### Instructions for the GUI version
-Navigate to the `src/GUI/` folder, and run `GUI.py` with python. Make sure to `pip install -r requirements.txt` before you do this, or it won't work. Then use the GUI
-like you would any other GUIs.
+Navigate to the `src/GUI/` folder. Make sure to `pip install -r requirements.txt` before you do this, or it won't work. And that the `ghostery.xpi` file is present in the `src/GUI` directory.
+Then finally run the file `main.py` with `py main.py` if you are on UNIX/Linux run `python3 main.py` instead.
 
 ### CLI Demonstration
 Link to video [here](https://youtu.be/E6Tb2xtnc3o)
