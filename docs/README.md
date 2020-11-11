@@ -1,4 +1,4 @@
-# Warning
+# Warning, legal related.
 Since you are **not** supposed to do this. It means that this is of course **illegal** use this at your own risk. I will not be responsible for anything that happens to you due to your use of this application, and will not be held accountable. License found [here](https://github.com/YJH16120/UMA/blob/main/docs/license)
 
 # UMA (Untitled Media App)
@@ -38,6 +38,8 @@ Link to video [here](https://youtu.be/Pi5b0CzH4EM)
 # Why use UMA?
 UMA has the ability to download any media you are currenly playing. Such as a song you really like. Just enter "download" in the terminal
 and it will download the desired file into a directory called "media".
+
+**This has only been tested on windows.**
 
 # Features to be added.
 1. Displaying the possible videos to choose from.
