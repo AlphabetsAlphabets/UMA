@@ -9,22 +9,30 @@ I will accept any and all help, so feel free to dm me at discord. My tag is: 叶
 Documentation located [here](https://github.com/YJH16120/UMA/blob/main/docs.md)
 
 # Using UMA
+
+### Instructions for the CLI version
 All you need to make sure. Is to have all the files downloaded. And you need the Firefox web browser. As well as the `ghostery.xpi` which will be provided.
 Install all required files in `requirements.txt`. Run the python file `use.py` in terminal.
 
-A video demonstration can be found [here](https://youtu.be/E6Tb2xtnc3o), this example does not have a GUI working with it. A GUI demonstration will be made soon after.
+### Instructions for the GUI version
+Navigate to the `src/GUI/` folder, and run `GUI.py` with python. Make sure to `pip install -r requirements.txt` before you do this, or it won't work. Then use the GUI
+like you would any other GUIs.
+
+### CLI Demonstration
+Link to video [here](https://youtu.be/E6Tb2xtnc3o)
+
+### GUI Demonstration
+Link to video [here](https://youtu.be/Pi5b0CzH4EM)
 
 # Why use UMA?
 UMA has the ability to download any media you are currenly playing. Such as a song you really like. Just enter "download" in the terminal
 and it will download the desired file into a directory called "media".
 
 # Features to be added.
-1. Getting a GUI to work with UMA so it is more user friendly, and so that more people can use it. This is located in a branch called [GUI](https://github.com/YJH16120/GUI)
+1. Displaying the possible videos to choose from.
 
 ### Known limitations
 1. Unable to display the following content available. Similar to YouTube, where there is a column with all other videos you can possible choose from.
-
-2. Unable to skip to a specific portion of the video. (This hasn't been an issue for me yet, so feel free to create an issue when needed)
 
 3. Unable to skip straight to next video, once it has ended (When that auto-play button shows up)
 
