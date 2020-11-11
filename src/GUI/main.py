@@ -3,11 +3,12 @@ from tkinter import *
 import sys, os
 
 # Custom packages
+from player import *
 
-class Application(Frame):
-    count = 0
+class Application(Frame, Player):
     def __init__(self, master=None):
         Frame.__init__(self, master=None)
+        Player.__init__(self)
         self.master = master
 
         self.Window()
@@ -29,40 +30,45 @@ class Application(Frame):
         FindBtn.place(x=280 , y=50)
 
     def Search(self):
-        self.video = self.SongEntry.get()
-
-        self.P = Player(self.video)
-        self.P.Play()
-
+        video = self.SongEntry.get()
+        Player.Play(self, video)
         self.SelectVideo()
 
     def SelectVideo(self):
         ReferenceByNumber = Label(self.master, text="Reference by number: ")
         ReferenceByNumber.place(x=50, y=90)
 
-        self.RefByNum = Entry(self.master, borderwidth=3)
-        self.RefByNum.place(x=170, y=90)
+        RefByNum = Entry(self.master, borderwidth=3)
+        RefByNum.place(x=170, y=90)
 
-        ConfSelection = Button(self.master, text="Press to confirm", command=self.GetText)
+        ConfSelection = Button(self.master, text="Press to confirm", command=lambda: self.GetText(RefByNum))
         ConfSelection.place(x=300, y=90)
 
-    def GetText(self):
-        self.text = self.RefByNum.get()
-        self.WriteToCommand()
+    def GetText(self, e):
+        selector = e.get()
+        Player.SelectVideo(self, selector)
         self.CreateControlButton()
 
     def CreateControlButton(self):
-        self.PlayBtn = Button(self.master, text="Pause", fg="green", command=lambda: self.WriteToCommand("p"))
-        self.PlayBtn.place(x=50, y=120)
+        PlayBtn = Button(self.master, text="Play/Pause", fg="green", command=lambda: self.PlayerControl("p"))
+        PlayBtn.place(x=50, y=120)
 
-        self.PlayReplay = Button(self.master, text="Replay", fg="green", command=lambda: self.WriteToCommand("r"))
-        self.PlayReplay.place(x=100, y=120)
+        ReplayBtn = Button(self.master, text="Replay", fg="green", command=lambda: self.PlayerControl("r"))
+        ReplayBtn.place(x=140, y=120)
 
-        self.PlayDownload = Button(self.master, text="Download", fg="green", command=lambda: self.WriteToCommand("dl"))
-        self.PlayDownload.place(x=160, y=120)
+        PlayDownload = Button(self.master, text="Download", fg="green", command=lambda: self.PlayerControl("dl"))
+        PlayDownload.place(x=190, y=120)
+
+        self.check = BooleanVar()
+        mp3 = Checkbutton(self.master, text="mp3", variable=self.check, onvalue=True, offvalue=False)
+        mp3.place(x=280, y=120)
+
+    def PlayerControl(self, cmd):
+        check = self.check.get()
+        Player.PlayerControl(self, command=cmd, mp3=check)
 
     def AbsoluteExit(self):
-        self.P.AbsoluteExit()
+        Player.AbsoluteExit(self)
         sys.exit()
 
 try:
@@ -74,5 +80,4 @@ try:
 
 except Exception as e:
     print(e)
-    App.AbsoluteExit()
     sys.exit()
