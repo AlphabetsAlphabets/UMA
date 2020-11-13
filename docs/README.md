@@ -42,7 +42,9 @@ and it will download the desired file into a directory called "media".
 **This has only been tested on windows.**
 
 # Features to be added.
-1. Displaying the possible videos to choose from.
+These are listed in terms of priority
+1. Adding asynchronous capabilities
+2. Adding possible videos to watch.
 
 ### Known limitations
 1. Unable to display the following content available. Similar to YouTube, where there is a column with all other videos you can possible choose from.

@@ -5,7 +5,6 @@ from datetime import datetime
 import sys, os
 
 # Selenium, and Helium
-from helium import *
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By

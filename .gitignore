@@ -3,6 +3,8 @@ ghostery.xpi
 src/GUI/__pycache__/
 src/GUI/media/
 src/GUI/ghostery.xpi
+src/GUI/geckodriver.log
 
+src/CLI/__pycache__/
 src/CLI/media_downloader.py
 src/CLI/media/
