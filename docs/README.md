@@ -41,14 +41,9 @@ and it will download the desired file into a directory called "media".
 
 **This has only been tested on windows.**
 
-# Features to be added.
-These are listed in terms of priority
-1. Adding asynchronous capabilities
-2. Adding possible videos to watch.
-
 ### Known limitations
-1. Unable to display the following content available. Similar to YouTube, where there is a column with all other videos you can possible choose from.
+1. Unable to display the following content available. Similar to YouTube, where there is a column with all other videos you can possible choose from. (Won't fix)
 
-3. Unable to skip straight to next video, once it has ended (When that auto-play button shows up)
+3. Unable to skip straight to next video, once it has ended (Won't fix)
 
-4. Unable to skip straight to next video, on command.
+4. Unable to skip straight to next video, on command. (Won't fix)
