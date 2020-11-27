@@ -2,9 +2,8 @@
 Since you are **not** supposed to do this. It means that this is of course **illegal** use this at your own risk. I will not be responsible for anything that happens to you due to your use of this application, and will not be held accountable. License found [here](https://github.com/YJH16120/UMA/blob/main/docs/license)
 
 # UMA (Untitled Media App)
-The purpose of UMA is to go around those pesky spotify ad barriers, that will disrupt the user experience. Everything will be done through the terminal as I am __terrible__ at graphic design. However, I am currently developing on a GUI that can work with UMA's script.
-
-I will accept any and all help, so feel free to dm me at discord. My tag is: 叶家煌(Jia Hong)#8464.
+The purpose of UMA is to go around those pesky spotify ad barriers, that will disrupt the user experience. 
+Users have the choice between operating the Command line version [(CLI)](https://github.com/YJH16120/UMA/tree/main/src/CLI) or the User interface version [(GUI)](https://github.com/YJH16120/UMA/tree/main/src/GUI). 
 
 Documentation located [here](https://github.com/YJH16120/UMA/blob/main/docs.md)
 
