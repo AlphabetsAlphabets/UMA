@@ -17,7 +17,7 @@ If you don't have python download it [here](https://www.python.org/ftp/python/3.
 Install the firefox browser if you haven't already, as this program uses firefox.
 
 3. Have ghostery.xpi:
-After installing the ghostery browser extension from the firefox web store, xigGo to the search bar in firefox and type in `about:support` and find the row that reads
+After installing the ghostery browser extension from the firefox web store, go to the search bar in firefox and type in `about:support` and find the row that reads
 "Profile folder", and click the button "open folder". Then find the extensions folder, and find the file `firefox@ghostery.com.xpi` and rename it to `ghostery.xpi` keep the extension, unchanged.
 
 ### Instructions for the CLI version
