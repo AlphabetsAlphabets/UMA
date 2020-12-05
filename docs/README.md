@@ -14,7 +14,7 @@ Documentation located [here](https://github.com/YJH16120/UMA/blob/main/docs.md)
 #### Windows installation 
 If you don't have python download it [here](https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe). A note is that once you click this link, it will __immediately__ download python.exe. This is only for __windows__.
 
-### Ubuntu/Debian installation
+#### Ubuntu/Debian installation
 You do not need to install anything, if you're already on a Linux distro since python comes installed by default, but to make sure it is python 3.5 and above, use the command `python3 --version`. If it is
 greater than version 3.5 go ahead and proceed to the next step. If not go to the terminal and write the following into the terminal
 ```
