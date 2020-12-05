@@ -3,8 +3,7 @@ import sys
 
 def main():
     P1 = Player()
-    guard = True
-    while guard:
+    while True:
         P1.Play()
         playing = True
 

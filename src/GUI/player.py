@@ -1,6 +1,11 @@
+# This is the music player
+
 # Built in packages
 import sys, os
 from time import sleep
+
+# Beautiful Soup/bs4
+from bs4 import BeautifulSoup as BS
 
 # Selenium
 from selenium import webdriver
@@ -11,12 +16,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains as AC
 
-
 # Custom packages
-from media import *
+import video # To the video downloader
 
 class Player:
-    ghostery = os.getcwd() + "\\ghostery.xpi"
+    ghostery = os.getcwd() + "/ghostery.xpi"
     opts = Options()
     opts.headless = True
     driver = webdriver.Firefox(options=opts)
@@ -120,7 +124,6 @@ class Player:
             elif command == "dl":
                 M = Media(video=self.vidlink, mp3=mp3)
                 M.download()
-
 
     def AbsoluteExit(self):
         self.driver.close()

@@ -17,28 +17,38 @@ If you don't have python download it [here](https://www.python.org/ftp/python/3.
 Install the firefox browser if you haven't already, as this program uses firefox.
 
 3. Have ghostery.xpi:
-Go to the search bar in firefox and type in `about:support` and find the row that reads "Profile folder", and click the button "open folder". Then find the extensions folder,
-and find the file `firefox@ghostery.com.xpi` and rename it to `ghostery.xpi` keep the extension, unchanged.
+After installing the ghostery browser extension from the firefox web store, xigGo to the search bar in firefox and type in `about:support` and find the row that reads
+"Profile folder", and click the button "open folder". Then find the extensions folder, and find the file `firefox@ghostery.com.xpi` and rename it to `ghostery.xpi` keep the extension, unchanged.
 
 ### Instructions for the CLI version
-Navigate to the `src/CLI` folder, and make sure to `pip install -r requirements.txt` before hand. Move the `ghostery.xpi` file to `src/CLI`. Finally, run `script.py` with python: `py script.py` for
-UNIX/Linux run `python3 script.py`
-
-### Instructions for the GUI version
-Navigate to the `src/GUI/` folder. Make sure to `pip install -r requirements.txt` before you do this, or it won't work. And that the `ghostery.xpi` file is present in the `src/GUI` directory.
-Then finally run the file `main.py` with `py main.py` if you are on UNIX/Linux run `python3 main.py` instead.
-
-### CLI Demonstration
+#### CLI Demonstration
 Link to video [here](https://youtu.be/E6Tb2xtnc3o)
 
-### GUI Demonstration
+#### Windows installation
+Navigate to the `src/CLI` folder, and make sure to `pip install -r requirements.txt` before hand. Move the `ghostery.xpi` file to `src/CLI`. Finally, run `use.py` with python: `py use.py`
+
+#### Ubuntu/Debian installation
+Navigate to the `src/CLI` folder, and make sure to `pip install -r requirements.txt`, then move `ghostery.xpi` file to `src/CLI`. Then install tkinter with `sudo apt-get python3-tk` (Which is the GUI framework)
+Next run `python3 use.py`
+
+### Instructions for the GUI version
+#### GUI Demonstration
 Link to video [here](https://youtu.be/Pi5b0CzH4EM)
+
+#### Windows installation
+Navigate to the `src/CLI` folder, and make sure to `pip install -r requirements.txt` before hand. Move the `ghostery.xpi` file to `src/CLI`. Finally, run `GUI.py` with python: `py GUI.py`
+
+#### Ubuntu/Debian installation
+Navigate to the `src/CLI` folder, and make sure to `pip install -r requirements.txt`, then move `ghostery.xpi` file to `src/CLI`. Then install tkinter with `sudo apt-get python3-tk` (Which is the GUI framework)
+Next run `python3 GUI.py`
+
+#### Which OS' are supported?
+Currently the only supported OS's are the Windows OS and Ubuntu/Debian. Since these are the OS' thay I've tested my program on. 
 
 # Why use UMA?
 UMA has the ability to download any media you are currenly playing. Such as a song you really like. Just enter "download" in the terminal
 and it will download the desired file into a directory called "media".
 
-**This has only been tested on windows.**
 
 ### Known limitations
 1. Unable to display the following content available. Similar to YouTube, where there is a column with all other videos you can possible choose from. (Won't fix)

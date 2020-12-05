@@ -1,9 +1,11 @@
+# This is the GUI
+
 # Built in packages
 from tkinter import *
 import sys, os
 
 # Custom packages
-from player import *
+from player import * # To the music player
 
 class Application(Frame, Player):
     def __init__(self, master=None):

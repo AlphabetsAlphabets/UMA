@@ -2,7 +2,6 @@
 from time import sleep
 import sys, os
 from datetime import datetime
-import sys, os
 
 # Selenium, and Helium
 
@@ -17,10 +16,10 @@ from selenium.webdriver.common.action_chains import ActionChains as AC
 from bs4 import BeautifulSoup as BS
 
 # Custom packages
-from media_downloader import Media
+from video import Media
 
 class Player:
-    ghostery = os.getcwd() + "\\ghostery.xpi"
+    ghostery = os.getcwd() + "/ghostery.xpi"
     opts = Options()
     opts.headless = True
     driver = webdriver.Firefox(options=opts)
