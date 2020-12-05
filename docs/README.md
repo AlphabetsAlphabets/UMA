@@ -11,14 +11,25 @@ Documentation located [here](https://github.com/YJH16120/UMA/blob/main/docs.md)
 
 ## Prerequisites
 1. Have python installed:
-If you don't have python download it [here](https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe). A note is that once you click this link, it will __immediately__ download python.exe.
+#### Windows installation 
+If you don't have python download it [here](https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe). A note is that once you click this link, it will __immediately__ download python.exe. This is only for __windows__.
+
+### Ubuntu/Debian installation
+You do not need to install anything, if you're already on a Linux distro since python comes installed by default, but to make sure it is python 3.5 and above, use the command `python3 --version`. If it is
+greater than version 3.5 go ahead and proceed to the next step. If not go to the terminal and write the following into the terminal
+```
+sudo apt update
+sudo apt -y upgrade
+```
+Then check the version of python again with `python3 --version`
 
 2. Have Firefox installed:
 Install the firefox browser if you haven't already, as this program uses firefox.
 
 3. Have ghostery.xpi:
 After installing the ghostery browser extension from the firefox web store, go to the search bar in firefox and type in `about:support` and find the row that reads
-"Profile folder", and click the button "open folder". Then find the extensions folder, and find the file `firefox@ghostery.com.xpi` and rename it to `ghostery.xpi` keep the extension, unchanged.
+"Profile folder", and click the button "open folder". Then find the extensions folder, and find the file `firefox@ghostery.com.xpi` and rename it to
+`ghostery.xpi` keep the extension, unchanged.
 
 ### Instructions for the CLI version
 #### CLI Demonstration
