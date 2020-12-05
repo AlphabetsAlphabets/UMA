@@ -66,7 +66,7 @@ class Media(base.Link):
             stream = yt.streams[-1]
             file = stream.download(self.path)
             change_to = file.strip(".web")
-            change_to = file.strip(".web")
+            change_to = file.strip(".webm")
             os.rename(file, f"{change_to}.mp3")
         else:
             stream = yt.streams.first()
