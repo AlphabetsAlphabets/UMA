@@ -32,6 +32,9 @@ After installing the ghostery browser extension from the firefox web store, go t
 `ghostery.xpi` keep the extension, unchanged.
 
 ### Instructions for the CLI version
+#### Important notice
+The CLI version of this media player will be removed in a few more weeks. Support will not longer be provided, and downloads will not be provided either.
+
 #### CLI Demonstration
 Link to video [here](https://youtu.be/E6Tb2xtnc3o)
 
