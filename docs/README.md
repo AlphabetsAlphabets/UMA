@@ -2,13 +2,11 @@
 Since you are **not** supposed to do this. It means that this is of course **illegal** use this at your own risk. I will not be responsible for anything that happens to you due to your use of this application, and will not be held accountable. License found [here](https://github.com/YJH16120/UMA/blob/main/docs/license)
 
 # UMA (Untitled Media App)
+A video demonstration can be found [here](https://youtu.be/Pi5b0CzH4EM)
 The purpose of UMA is to go around those pesky spotify ad barriers, that will disrupt the user experience. 
-Users have the choice between operating the Command line version [(CLI)](https://github.com/YJH16120/UMA/tree/main/src/CLI) or the User interface version [(GUI)](https://github.com/YJH16120/UMA/tree/main/src/GUI). 
-
 Documentation located [here](https://github.com/YJH16120/UMA/blob/main/docs.md)
 
-# Using UMA
-
+# Download instructions
 ## Prerequisites
 1. Have python installed:
 #### Windows installation 
@@ -31,30 +29,7 @@ After installing the ghostery browser extension from the firefox web store, go t
 "Profile folder", and click the button "open folder". Then find the extensions folder, and find the file `firefox@ghostery.com.xpi` and rename it to
 `ghostery.xpi` keep the extension, unchanged.
 
-### Instructions for the CLI version
-#### Important notice
-The CLI version of this media player will be removed in a few more weeks. Support will not longer be provided, and downloads will not be provided either.
-
-#### CLI Demonstration
-Link to video [here](https://youtu.be/E6Tb2xtnc3o)
-
-#### Windows installation
-Navigate to the `src/CLI` folder, and make sure to `pip install -r requirements.txt` before hand. Move the `ghostery.xpi` file to `src/CLI`. Finally, run `use.py` with python: `py use.py`
-
-#### Ubuntu/Debian installation
-Navigate to the `src/CLI` folder, and make sure to `pip install -r requirements.txt`, then move `ghostery.xpi` file to `src/CLI`. Then install tkinter with `sudo apt-get python3-tk` (Which is the GUI framework)
-Next run `python3 use.py`
-
-### Instructions for the GUI version
-#### GUI Demonstration
-Link to video [here](https://youtu.be/Pi5b0CzH4EM)
-
-#### Windows installation
-Navigate to the `src/CLI` folder, and make sure to `pip install -r requirements.txt` before hand. Move the `ghostery.xpi` file to `src/CLI`. Finally, run `GUI.py` with python: `py GUI.py`
-
-#### Ubuntu/Debian installation
-Navigate to the `src/CLI` folder, and make sure to `pip install -r requirements.txt`, then move `ghostery.xpi` file to `src/CLI`. Then install tkinter with `sudo apt-get python3-tk` (Which is the GUI framework)
-Next run `python3 GUI.py`
+4. Move `ghostery.xpi` to `src/` then all you need to do is run `py GUI.py` (For Ubuntu/Debian it is `python3 GUI.py`).
 
 #### Which OS' are supported?
 Currently the only supported OS's are the Windows OS and Ubuntu/Debian. Since these are the OS' thay I've tested my program on. 
@@ -62,7 +37,6 @@ Currently the only supported OS's are the Windows OS and Ubuntu/Debian. Since th
 # Why use UMA?
 UMA has the ability to download any media you are currenly playing. Such as a song you really like. Just enter "download" in the terminal
 and it will download the desired file into a directory called "media".
-
 
 ### Known limitations
 1. Unable to display the following content available. Similar to YouTube, where there is a column with all other videos you can possible choose from. (Won't fix)
