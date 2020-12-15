@@ -13,7 +13,7 @@ Documentation located [here](https://github.com/YJH16120/UMA/blob/main/docs.md)
 If you don't have python download it [here](https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe). A note is that once you click this link, it will __immediately__ download python.exe. This is only for __windows__.
 
 #### Ubuntu/Debian installation
-You __do not__ need to install python as it comes with the default installtion. However, the program does need a python version greater than 3.5. So check your python versoin with `python3 --version`.  
+You __do not__ need to install python as it comes with the default installtion. However, the program does need a python version greater than 3.5. So check your python version  with `python3 --version`.  
 If it is greater than version 3.5, go ahead and proceed to the next step. If not use the following commands:
 ```
 sudo apt update
@@ -43,8 +43,8 @@ Move `ghostery.xpi` to `src/` then all you need to do is run `py GUI.py` (For Ub
 Currently the only supported OS's are the Windows OS and Ubuntu/Debian. Since these are the OS' thay I've tested my program on. 
 
 # Why use UMA?
-UMA has the ability to download any media you are currenly playing. Such as a song you really like. Just enter "download" in the terminal
-and it will download the desired file into a directory called "media".
+UMA has the ability to download any media you are currenly playing. Such as a song you really like. Just tick the box if you want an mp3 and leave it empty for an mp4.  
+Then click the download button. Then the media will be downloaded to a folder called "media"
 
 ### Known limitations
 1. Unable to display the following content available. Similar to YouTube, where there is a column with all other videos you can possible choose from. (Won't fix)
