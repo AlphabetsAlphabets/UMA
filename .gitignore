@@ -1,12 +1,3 @@
-ghostery.xpi
-
-env/
-dev/
-
-src/__pycache__/
-src/geckodriver.log
-
-
 # Added by cargo
-
+src/audio
 /target
