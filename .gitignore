@@ -5,3 +5,8 @@ dev/
 
 src/__pycache__/
 src/geckodriver.log
+
+
+# Added by cargo
+
+/target
