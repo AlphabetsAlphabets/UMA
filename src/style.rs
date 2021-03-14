@@ -19,7 +19,7 @@ impl Style {
     }
 }
 
-pub fn stylized_output(style: &Style, display_text: &str) {
+pub fn stylized_output(style: &Style, display_text: String) {
     let fg = Color::Rgb { 
         r: style.fg[0],
         g: style.fg[1],

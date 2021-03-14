@@ -1,4 +1,3 @@
-use std::io;
 use std::io::stdout;
 use std::fs::File;
 use std::io::BufReader;
@@ -16,37 +15,6 @@ TODO:
     2. Navigate the stream, forwards and backwards.
     3. Make output pretty, hide console logs.
 */
-fn player_control(response: &String, sink: &Sink, mut control: &std::io::Stdout) -> bool {
-    let response = response.trim();
-
-    let positive = style::Style::new(
-        [158, 252, 7],
-    );
-
-    let negative = style::Style::new(
-        [234, 119, 121],
-    );
-
-    if response == "p" {
-        sink.pause();
-        execute!(control, Clear(ClearType::FromCursorUp)).unwrap();
-        style::stylized_output(&positive, "Audio playback has beed paused.");
-        println!();
-
-        return false;
-    }
-    else if response == "e" {
-        execute!(control, Clear(ClearType::FromCursorUp)).unwrap();
-        return true; 
-    }
-    else {
-        sink.play();
-        execute!(control, Clear(ClearType::All)).unwrap();
-        style::stylized_output(&negative, "Audio playback has resumed.");
-        println!();
-        return false;
-    }
-}
 
 fn playback() {
     let mut stdout = stdout();
@@ -61,31 +29,20 @@ fn playback() {
     let sink = Sink::try_new(&stream_handle).unwrap();
     sink.append(source);
 
-    let intro = style::Style::new([252, 121, 7]);
-    style::stylized_output(&intro, "Press p to pause, P to play, and e to exist.");
 
-    execute!(stdout, Clear(ClearType::All)).unwrap();
+    let intro = style::Style::new([252, 121, 7]);
+
+    execute!(stdout, Clear(ClearType::All), cursor::MoveTo(0, 0)).unwrap();
+    style::stylized_output(&intro, "Press p to pause, P to play, and e to exist.".to_string());
+    println!();
 
     loop {
-        execute!(stdout, cursor::MoveTo(0, 0)).unwrap();
-        let mut response = String::new();
-        io::stdin()
-            .read_line(&mut response)
-            .unwrap();
+        let volume = sink.volume();
 
-        let cancellation_token = player_control(&response, &sink, &mut stdout);
-        if cancellation_token {
-            let leave = style::Style::new(
-                [200, 197, 247],
-            );
-
-            style::stylized_output(&leave, "Goodbye. See you next time.");
-            break;
-        }
-        response.clear();
+        key::detect(&sink, &mut stdout, &volume);
    }
 }
 
 fn main() {
-    key::detect();
+    playback();
 }
