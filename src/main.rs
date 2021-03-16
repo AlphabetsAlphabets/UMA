@@ -1,5 +1,5 @@
-use std::io::stdout;
-use std::fs::File;
+use std::io::{stdout, stdin, Write, self};
+use std::fs::{File, read_dir};
 use std::io::BufReader;
 
 use rodio::Sink;
@@ -11,9 +11,9 @@ mod key;
 
 /*
 TODO:
-    1. Increase/decrease volume when J or up arrow, or when K or down arrow is pressed respectively
-    2. Navigate the stream, forwards and backwards.
-    3. Make output pretty, hide console logs.
+    1. Ask where to locate mp3 files.
+        - test if it's limited to mp3 only
+    2. Add a pretty selection screen.
 */
 
 fn playback() {
@@ -29,20 +29,44 @@ fn playback() {
     let sink = Sink::try_new(&stream_handle).unwrap();
     sink.append(source);
 
-
     let intro = style::Style::new([252, 121, 7]);
 
     execute!(stdout, Clear(ClearType::All), cursor::MoveTo(0, 0)).unwrap();
-    style::stylized_output(&intro, "Press p to pause, P to play, and e to exist.".to_string());
+    style::stylized_output(&intro, "Welcome to the music player.".to_string());
     println!();
 
     loop {
         let volume = sink.volume();
 
-        key::detect(&sink, &mut stdout, &volume);
+        key::detect(&sink, &mut stdout, volume);
    }
 }
 
+fn find_audio_files() {
+    print!("Which folder do you want me to look for songs in? Please write down the full path\n> ");
+    stdout().flush().unwrap();
+    let mut directory = String::new();
+    stdin()
+        .read_line(&mut directory)
+        .expect("Failed to read line.");
+
+    let mut files = vec!();
+    let contents = read_dir(directory.trim()).expect("That is an invalid directory.");
+    for content in contents {
+        let file_name =  content.unwrap().path().display().to_string();
+        let length_of_file_name = file_name.chars().count();
+        let extensions = file_name[length_of_file_name-3..].to_string();
+
+        if extensions == "mp3" || extensions == ".wav" {
+            files.push(file_name);
+        }
+    }
+    for file in files {
+        println!("{}", file);
+    }
+}
+
 fn main() {
+    find_audio_files();
     playback();
 }
