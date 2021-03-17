@@ -1,4 +1,4 @@
-use crossterm::event::{read, KeyEvent, KeyCode, Event, KeyModifiers};
+use crossterm::event::{read, KeyEvent, KeyCode, Event};
 use crossterm::terminal::{Clear, ClearType};
 use crossterm::{execute, cursor};
 use rodio::Sink;
@@ -20,6 +20,7 @@ pub fn detect(sink: &Sink, stdout: &std::io::Stdout, volume: f32){
             if volume == 0.0 { // Caps the lowest volume at 0 because for some reason volume increases when it goes to negative values
                 let status = "Volume already at 0".to_string();
                 on_key_detect(&current_vol, status, stdout);
+                return;
             }
             let new_volume = volume - 0.5;
             sink.set_volume(new_volume);
@@ -34,6 +35,7 @@ pub fn detect(sink: &Sink, stdout: &std::io::Stdout, volume: f32){
             if volume == 4.0 { // Caps volume at 4, don't want it to burst my ear drums
                 let status = "Volume is maxed out at 4.0".to_string();
                 on_key_detect(&current_vol, status, stdout);
+                return;
             }
             sink.set_volume(new_volume);
 
