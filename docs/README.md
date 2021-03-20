@@ -3,6 +3,10 @@ This is just a personal project I made for fun, I refactored it to Rust instead,
 
 This is a terminal music player, with slight TUI elements. It plays music from your local machine.
 
+# Installation
+simply run `git clone https://github.com/YJH16120/UMA` then cd in UMA `cd UMA`,
+then run `cargo build --release` once you've cloned the repository.
+
 # Commands
 UMA features basic commands, and they're inspired by vim motions.
 
