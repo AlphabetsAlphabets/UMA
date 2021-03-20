@@ -48,10 +48,19 @@ fn playback(file_to_play: String) {
 }
 
 fn main() {
+    let file_path = files::find_audio_files();
     loop {
-        let file_path = files::find_audio_files();
-        let file_name = files::get_song_names(&file_path);
-        let song_to_play = files::select_song(&file_name, &file_path);
-        playback(song_to_play);
+        let mut count = 0;
+        if count <= 0 {
+            let file_name = files::get_song_names(&file_path);
+            let song_to_play = files::select_song(&file_name, &file_path);
+            playback(song_to_play);
+            count += 1;
+        }
+        else {
+            let file_name = files::get_song_names(&file_path);
+            let song_to_play = files::select_song(&file_name, &file_path);
+            playback(song_to_play);
+        }
     }
 }
