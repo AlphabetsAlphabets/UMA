@@ -1,12 +1,10 @@
 use std::io::stdout;
-use std::time::Duration;
 use std::fs::File;
 use std::io::BufReader;
 
 use rodio::Sink;
 use crossterm::terminal::{Clear, ClearType};
 use crossterm::{execute, cursor};
-use crossterm::event::poll;
 
 mod style;
 mod key;
@@ -17,19 +15,20 @@ TODO:
     1. Add a pretty selection screen.
 */
 
-fn is_event_available() -> bool {
-    let result = poll(Duration::from_millis(1000));
-    let result = match result {
-        Ok(true) => true,
-        Ok(false) => false,
-        Err(_error) => false,
-    };
-    
-    return result;
-}
-
-
 fn playback(file_to_play: &String) {
+    //! ### Summary
+    //! Plays the select audio file via the provided file path
+    //! 
+    //! ### Detailed explanation
+    //! It creates an audio source from the result of `File::open(file_to_play)`, appends it to the sink
+    //! and plays the audio file. It can also detect keyboard inputs while audio is playing, this is used to
+    //! control the volume, and to exit the player.
+    //! 
+    //! ### An example
+    //! ```
+    //! let path_to_audio_file = <path to audio file>.to_string();
+    //! playback(&path_to_audio_file);
+    //! ```
     let mut stdout = stdout();
     let (_stream, stream_handle) = rodio::OutputStream::try_default().unwrap();
 
@@ -53,9 +52,7 @@ fn playback(file_to_play: &String) {
         let volume = sink.volume();
 
         key::detect(&sink, &mut stdout, volume);
-        if sink.empty() {
-            break;         
-        }
+        if sink.empty() { break; }
     }
 }
 
@@ -65,9 +62,7 @@ fn main() {
     let file_path = files::find_audio_files();
     let file_path = match file_path {
         Some(file_path) => file_path,
-        None => { 
-            std::process::abort()
-        }
+        None => std::process::abort()
     };
     let file_name = files::get_song_names(&file_path);
     let song_to_play = files::select_song(&file_name, &file_path);

@@ -1,20 +1,43 @@
-use crossterm::event::{read, KeyEvent, KeyCode, Event};
+use crossterm::event::{read, KeyEvent, KeyCode, Event, poll};
 use crossterm::terminal::{Clear, ClearType};
 use crossterm::{execute, cursor};
 use rodio::Sink;
+
+use std::time::Duration;
 
 // #[path = "style.rs"] mod style;
 use super::style;
 
 fn on_key_detect(style: &style::Style, text: String, mut stdout: &std::io::Stdout) {
+    //! ### Summary
+    //! Provides colourized output to text in the terminal. 
+    //! 
+    //! ### Detailed explanation
+    //! With `stdout` from `let stdout = std::io::stdout()`, the cursor will move to (0, 1) in the terminal
+    //! and the screen will be cleared, then with the colourized text will be printed onto the screen.
+    //! The colour is determined by what RGB values set in the `style` struct
+    //! 
+    //! ### Example
+    //! ```
+    //! let colourized = style::Style::new([252, 2, 202]);
+    //! style::stylized_output(&colourized, "Colourized text!".to_string());
+    //! ```
     execute!(stdout, cursor::MoveTo(0, 1), Clear(ClearType::FromCursorDown)).unwrap();
     style::stylized_output(&style, text);
     println!();
 }
 
 pub fn detect(sink: &Sink, stdout: &std::io::Stdout, volume: f32){
+    //! ### Summray
+    //! Used to detect keyboard inputs to issue commands such as pause, play, and exit.
+    //! 
+    //! ### Detailed explanation
+    //! With the crossterm crate as a dependency, it will check whether or not there is keyboard input every
+    //! second. If there is keyboard input then it'll continue, if not it will return from the funciton.
     let current_vol = style::Style::new([252, 2, 202]);
 
+    // Checking if there is a keyboard input every second, if it doesn't, then it'll return the function.
+    if !poll(Duration::from_secs(1)).unwrap_or_default() { return; }
     match read().unwrap() {
         Event::Key(KeyEvent { code: KeyCode::Char('j'), .. }) => {
             if volume == 0.0 { 
