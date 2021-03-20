@@ -17,12 +17,12 @@ pub fn detect(sink: &Sink, stdout: &std::io::Stdout, volume: f32){
 
     match read().unwrap() {
         Event::Key(KeyEvent { code: KeyCode::Char('j'), .. }) => {
-            if volume == 0.0 { // Caps the lowest volume at 0 because for some reason volume increases when it goes to negative values
+            if volume == 0.0 { 
                 let status = "Volume already at 0".to_string();
                 on_key_detect(&current_vol, status, stdout);
                 return;
             }
-            let new_volume = volume - 0.5;
+            let new_volume = volume - 0.25;
             sink.set_volume(new_volume);
 
             let new_volume = sink.volume().to_string();
@@ -31,7 +31,7 @@ pub fn detect(sink: &Sink, stdout: &std::io::Stdout, volume: f32){
         }
 
         Event::Key(KeyEvent { code: KeyCode::Char('k'), .. }) => {
-            let new_volume = volume + 0.5;
+            let new_volume = volume + 0.25;
             if volume == 4.0 { // Caps volume at 4, don't want it to burst my ear drums
                 let status = "Volume is maxed out at 4.0".to_string();
                 on_key_detect(&current_vol, status, stdout);
