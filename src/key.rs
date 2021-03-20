@@ -7,7 +7,7 @@ use rodio::Sink;
 use super::style;
 
 fn on_key_detect(style: &style::Style, text: String, mut stdout: &std::io::Stdout) {
-    execute!(stdout, Clear(ClearType::All), cursor::MoveTo(0, 0)).unwrap();
+    execute!(stdout, cursor::MoveTo(0, 1), Clear(ClearType::FromCursorDown)).unwrap();
     style::stylized_output(&style, text);
     println!();
 }

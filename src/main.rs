@@ -12,9 +12,7 @@ mod files;
 
 /*
 TODO:
-    1. Ask where to locate mp3 files.
-        - test if it's limited to mp3 only
-    2. Add a pretty selection screen.
+    1. Add a pretty selection screen.
 */
 
 fn playback(file_to_play: String) {
@@ -30,12 +28,6 @@ fn playback(file_to_play: String) {
     let sink = Sink::try_new(&stream_handle).unwrap();
     sink.append(source);
 
-    let intro = style::Style::new([252, 121, 7]);
-
-    execute!(stdout, Clear(ClearType::All), cursor::MoveTo(0, 0)).unwrap();
-    style::stylized_output(&intro, "Welcome to the music player.".to_string());
-    println!();
-
     loop {
         let volume = sink.volume();
 
@@ -48,18 +40,44 @@ fn playback(file_to_play: String) {
 }
 
 fn main() {
+    let mut stdout = stdout();
+
     let file_path = files::find_audio_files();
+    let file_path = match file_path {
+        Some(file_path) => file_path,
+        None => { 
+            std::process::abort()
+        }
+    };
     loop {
-        let mut count = 0;
-        if count <= 0 {
+        let mut _count = 0;
+        if _count <= 0 {
             let file_name = files::get_song_names(&file_path);
             let song_to_play = files::select_song(&file_name, &file_path);
+
+            let mut current_song = files::get_song_name(&song_to_play);
+            let current_song_style = style::Style::new([135, 244, 9]);
+
+            execute!(stdout, cursor::MoveTo(0, 0), Clear(ClearType::FromCursorDown)).unwrap();
+            current_song = format!("Currently playing: {}", current_song);
+            style::stylized_output(&current_song_style, current_song.to_string());
+            println!();
+            
             playback(song_to_play);
-            count += 1;
+            _count += 1;
         }
         else {
             let file_name = files::get_song_names(&file_path);
             let song_to_play = files::select_song(&file_name, &file_path);
+
+            let mut current_song = files::get_song_name(&song_to_play);
+            let current_song_style = style::Style::new([135, 244, 9]);
+
+            execute!(stdout, cursor::MoveTo(0, 0), Clear(ClearType::FromCursorDown)).unwrap();
+            current_song = format!("Currently playing: {}", current_song);
+            style::stylized_output(&current_song_style, current_song.to_string());
+            println!();
+
             playback(song_to_play);
         }
     }
