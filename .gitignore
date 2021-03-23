@@ -3,3 +3,7 @@ src/audio
 /target
 
 src/test.rs
+.vscode/
+
+src/config.rs
+src/confs/
