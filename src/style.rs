@@ -20,7 +20,7 @@ impl Style {
     }
 }
 
-pub fn stylized_output(style: &Style, display_text: String) {
+pub fn stylized_output(style: &Style, display_text: &str) {
     //! ### Summary
     //! Colourizes the text about to be printed onto the screen.alloc
     //! 

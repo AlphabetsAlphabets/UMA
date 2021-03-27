@@ -8,7 +8,7 @@ use std::time::Duration;
 // #[path = "style.rs"] mod style;
 use super::style;
 
-fn on_key_detect(style: &style::Style, text: String, mut stdout: &std::io::Stdout) {
+fn on_key_detect(style: &style::Style, text: &str, mut stdout: &std::io::Stdout) {
     //! ### Summary
     //! Provides colourized output to text in the terminal. 
     //! 
@@ -41,7 +41,7 @@ pub fn detect(sink: &Sink, stdout: &std::io::Stdout, volume: f32){
     match read().unwrap() {
         Event::Key(KeyEvent { code: KeyCode::Char('j'), .. }) => {
             if volume == 0.0 { 
-                let status = "Volume already at 0".to_string();
+                let status = "Volume already at 0";
                 on_key_detect(&current_vol, status, stdout);
                 return;
             }
@@ -50,13 +50,13 @@ pub fn detect(sink: &Sink, stdout: &std::io::Stdout, volume: f32){
 
             let new_volume = sink.volume().to_string();
             let status = format!("Current volume: {}", new_volume);
-            on_key_detect(&current_vol, status, stdout);
+            on_key_detect(&current_vol, &status, stdout);
         }
 
         Event::Key(KeyEvent { code: KeyCode::Char('k'), .. }) => {
             let new_volume = volume + 0.25;
             if volume == 4.0 { // Caps volume at 4, don't want it to burst my ear drums
-                let status = "Volume is maxed out at 4.0".to_string();
+                let status = "Volume is maxed out at 4.0";
                 on_key_detect(&current_vol, status, stdout);
                 return;
             }
@@ -65,17 +65,17 @@ pub fn detect(sink: &Sink, stdout: &std::io::Stdout, volume: f32){
             let new_volume = sink.volume().to_string();
             let status = format!("Current volume: {}", new_volume);
 
-            on_key_detect(&current_vol, status, stdout);
+            on_key_detect(&current_vol, &status, stdout);
         }
 
         Event::Key(KeyEvent { code: KeyCode::Char('p'), .. }) => {
             let pause_play_style = style::Style::new([252, 105, 20]);
             if sink.is_paused() {
-                on_key_detect(&pause_play_style, "Resuming audio playback.".to_string(), stdout);
+                on_key_detect(&pause_play_style, "Resuming audio playback.", stdout);
                 sink.play();
             }
             else {
-                on_key_detect(&pause_play_style, "Halting audio playback.".to_string(), stdout);
+                on_key_detect(&pause_play_style, "Halting audio playback.", stdout);
                 sink.pause();
             }
         }
@@ -83,7 +83,7 @@ pub fn detect(sink: &Sink, stdout: &std::io::Stdout, volume: f32){
         Event::Key(KeyEvent { code: KeyCode::Esc, .. }) => {
             sink.stop();
             let exit = style::Style::new([210, 118, 252]);
-            style::stylized_output(&exit, "See you soon. Goodbye".to_string());
+            style::stylized_output(&exit, "See you soon. Goodbye");
             println!();
             std::process::exit(200);
         }

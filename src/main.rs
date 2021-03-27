@@ -6,6 +6,8 @@ use rodio::Sink;
 use crossterm::terminal::{Clear, ClearType};
 use crossterm::{execute, cursor};
 
+use std::path::PathBuf;
+
 mod style;
 mod key;
 mod files;
@@ -13,33 +15,37 @@ mod files;
 /*
 TODO:
     1. Add a pretty selection screen.
+    2. Move doc to outside the function.
+    3. Look into ? instead of using unwrap.
+    4. Change executes to queue (crossterm)
 */
 
-fn playback(file_to_play: &String) {
-    //! ### Summary
-    //! Plays the select audio file via the provided file path
-    //! 
-    //! ### Detailed explanation
-    //! It creates an audio source from the result of `File::open(file_to_play)`, appends it to the sink
-    //! and plays the audio file. It can also detect keyboard inputs while audio is playing, this is used to
-    //! control the volume, and to exit the player.
-    //! 
-    //! ### An example
-    //! ```
-    //! let path_to_audio_file = <path to audio file>.to_string();
-    //! playback(&path_to_audio_file);
-    //! ```
+/// ### Summary
+/// Plays the select audio file via the provided file path
+/// 
+/// ### Detailed explanation
+/// It creates an audio source from the result of `File::open(file_to_play)`, appends it to the sink
+/// and plays the audio file. It can also detect keyboard inputs while audio is playing, this is used to
+/// control the volume, and to exit the player.
+/// 
+/// ### An example
+/// ```
+/// let path_to_audio_file = <path to audio file>.to_string();
+/// playback(&path_to_audio_file);
+/// ```
+fn playback(file_to_play: &[PathBuf]) {
     let mut stdout = stdout();
     let (_stream, stream_handle) = rodio::OutputStream::try_default().unwrap();
+    let file_path = file_to_play[0].as_path();
 
     // opens the file, makes an audio source from the file
-    let file = File::open(file_to_play).unwrap();
+    let file = File::open(file_path).unwrap();
     let source = rodio::Decoder::new(BufReader::new(file));
     let source = match source {
         Ok(source) => source,
         Err(_error) => {
             let error_style = style::Style::new([244, 25, 9]);
-            style::stylized_output(&error_style, "The file you've chosen has an unrecognized format.".to_string());
+            style::stylized_output(&error_style, "The file you've chosen has an unrecognized format.");
             std::process::abort()
         }
     };
@@ -56,7 +62,7 @@ fn playback(file_to_play: &String) {
     }
 }
 
-fn main() {
+fn play() {
     let mut stdout = stdout();
 
     let file_path = files::find_audio_files();
@@ -64,30 +70,50 @@ fn main() {
         Some(file_path) => file_path,
         None => std::process::abort()
     };
-    let file_name = files::get_song_names(&file_path);
-    let song_to_play = files::select_song(&file_name, &file_path);
+    let file_name = files::get_song_names(&file_path[..]);
+    let song_to_play = files::select_song(&file_name[..], &file_path[..]);
 
-    let mut current_song = files::get_song_name(&song_to_play);
+    let current_song = files::get_song_names(&song_to_play[..]);
     let current_song_style = style::Style::new([135, 244, 9]);
 
+    // Convert: PathBuff -> OsStr -> OsString -> String, then match on Result
+    let current_song = {
+        current_song[0].as_os_str().
+        to_owned().
+        into_string().
+        expect("Unable to convert to String.")
+    };
+
     execute!(stdout, cursor::MoveTo(0, 0), Clear(ClearType::FromCursorDown)).unwrap();
-    current_song = format!("Currently playing: {}", current_song);
-    style::stylized_output(&current_song_style, current_song.to_string());
+    let current_song = format!("Currently playing: {}", current_song);
+    style::stylized_output(&current_song_style, &current_song);
     println!();
 
-    playback(&song_to_play);
+    playback(&song_to_play[..]);
 
     loop {
         let file_name = files::get_song_names(&file_path);
         let song_to_play = files::select_song(&file_name, &file_path);
 
-        current_song = files::get_song_name(&song_to_play);
-        current_song = format!("Currently playing: {}", current_song);
+        // If you pass in a vec with only one element, it doesn't pass the value in...
+        let current_song = files::get_song_names(&song_to_play[..]);
+        let current_song = {
+            current_song[0].as_os_str().
+            to_owned().
+            into_string().
+            expect("cannot convert to String.")
+        };
+
+        let current_song = format!("Currently playing: {}", current_song);
 
         execute!(stdout, cursor::MoveTo(0, 0), Clear(ClearType::FromCursorDown)).unwrap();
-        style::stylized_output(&current_song_style, current_song.to_string());
+        style::stylized_output(&current_song_style, &current_song);
         println!();
 
         playback(&song_to_play);
     }
+}
+
+fn main() {
+    play();
 }
