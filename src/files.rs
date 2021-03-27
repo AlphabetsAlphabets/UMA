@@ -11,9 +11,9 @@ use crossterm::terminal::{Clear, ClearType};
 use super::style;
 
 pub fn find_audio_files() -> Option<Vec<PathBuf>> {
-    print!("Which folder do you want me to look for songs in? Supports absolute and relative paths.");
-    
+    print!("Which folder do you want me to look for songs in? Supports absolute and relative paths.\n> ");
     stdout().flush().expect("Unable to flush.");
+    
     let mut directory = String::new();
     stdin()
         .read_line(&mut directory)
@@ -34,15 +34,12 @@ pub fn find_audio_files() -> Option<Vec<PathBuf>> {
             return None;
         }
     };
+
     for content in contents {
         let file_name =  content.expect("Unable to read dir.").path();
-        let extension = file_name.file_name();
-        let extension = match extension {
-            Some(extension) => extension,
-            None => panic!("File does not have an extension.")
-        };
+        let extension = file_name.extension().expect("File does not have an extension.");
 
-        if extension == ".mp3" || extension == ".wav" {
+        if extension == "mp3" || extension == "wav" {
             files.push(file_name);
         }
     }
@@ -64,7 +61,7 @@ pub fn get_song_names(songs: &[PathBuf]) -> Vec<OsString> {
 pub fn select_song(file_name: &[OsString], file_path: &[PathBuf]) -> Vec<PathBuf> {
     let mut stdout = stdout();
     // Look into queues instead of execute
-    execute!(stdout, cursor::MoveTo(0, 0), Clear(ClearType::All)).unwrap();
+    execute!(stdout, cursor::MoveTo(0, 0), Clear(ClearType::All)).expect("Unable to execute crossterm functions");
 
     for (mut index, name) in file_name.iter().enumerate() {
         let name = name.clone().into_string();
@@ -72,6 +69,7 @@ pub fn select_song(file_name: &[OsString], file_path: &[PathBuf]) -> Vec<PathBuf
             Ok(name) => name,
             Err(_error) => panic!("Unable to retrieve string from OsString.")
         };
+
         index += 1;
         let choose_song = format!("{}. {}", index, name);
         let choose_song_style = style::Style::new([252, 242, 108]);

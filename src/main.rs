@@ -35,11 +35,15 @@ TODO:
 /// ```
 fn playback(file_to_play: &[PathBuf]) {
     let mut stdout = stdout();
-    let (_stream, stream_handle) = rodio::OutputStream::try_default().unwrap();
+    let (_stream, stream_handle) = {
+        rodio::OutputStream::try_default()
+        .expect("Unable to create output stream from file.")
+    };
+
     let file_path = file_to_play[0].as_path();
 
     // opens the file, makes an audio source from the file
-    let file = File::open(file_path).unwrap();
+    let file = File::open(file_path).expect("Unable to open file.");
     let source = rodio::Decoder::new(BufReader::new(file));
     let source = match source {
         Ok(source) => source,
@@ -51,7 +55,7 @@ fn playback(file_to_play: &[PathBuf]) {
     };
 
     // Create a new thread to play audio on.
-    let sink = Sink::try_new(&stream_handle).unwrap();
+    let sink = Sink::try_new(&stream_handle).expect("unable to create sink.");
     sink.append(source);
 
     loop {
@@ -84,7 +88,7 @@ fn play() {
         expect("Unable to convert to String.")
     };
 
-    execute!(stdout, cursor::MoveTo(0, 0), Clear(ClearType::FromCursorDown)).unwrap();
+    execute!(stdout, cursor::MoveTo(0, 0), Clear(ClearType::FromCursorDown)).expect("Unable to execute crossterm functions");
     let current_song = format!("Currently playing: {}", current_song);
     style::stylized_output(&current_song_style, &current_song);
     println!();
@@ -106,7 +110,11 @@ fn play() {
 
         let current_song = format!("Currently playing: {}", current_song);
 
-        execute!(stdout, cursor::MoveTo(0, 0), Clear(ClearType::FromCursorDown)).unwrap();
+        execute!(stdout,
+            cursor::MoveTo(0, 0),
+            Clear(ClearType::FromCursorDown)).
+            expect("unable to execute crossterm functions");
+
         style::stylized_output(&current_song_style, &current_song);
         println!();
 

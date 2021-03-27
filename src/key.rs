@@ -27,18 +27,18 @@ fn on_key_detect(style: &style::Style, text: &str, mut stdout: &std::io::Stdout)
     println!();
 }
 
+// ### Summray
+// Used to detect keyboard inputs to issue commands such as pause, play, and exit.
+// 
+// ### Detailed explanation
+// With the crossterm crate as a dependency, it will check whether or not there is keyboard input every
+/// second. If there is keyboard input then it'll continue, if not it will return from the funciton.
 pub fn detect(sink: &Sink, stdout: &std::io::Stdout, volume: f32){
-    //! ### Summray
-    //! Used to detect keyboard inputs to issue commands such as pause, play, and exit.
-    //! 
-    //! ### Detailed explanation
-    //! With the crossterm crate as a dependency, it will check whether or not there is keyboard input every
-    //! second. If there is keyboard input then it'll continue, if not it will return from the funciton.
     let current_vol = style::Style::new([252, 2, 202]);
 
     // Checking if there is a keyboard input every second, if it doesn't, then it'll return the function.
     if !poll(Duration::from_secs(1)).unwrap_or_default() { return; }
-    match read().unwrap() {
+    match read().expect("Unable to read keyboard inputs.") {
         Event::Key(KeyEvent { code: KeyCode::Char('j'), .. }) => {
             if volume == 0.0 { 
                 let status = "Volume already at 0";
@@ -55,8 +55,8 @@ pub fn detect(sink: &Sink, stdout: &std::io::Stdout, volume: f32){
 
         Event::Key(KeyEvent { code: KeyCode::Char('k'), .. }) => {
             let new_volume = volume + 0.25;
-            if volume == 4.0 { // Caps volume at 4, don't want it to burst my ear drums
-                let status = "Volume is maxed out at 4.0";
+            if volume == 2.0 { // Caps volume at 4, don't want it to burst my ear drums
+                let status = "Volume is maxed out at 2.0";
                 on_key_detect(&current_vol, status, stdout);
                 return;
             }
