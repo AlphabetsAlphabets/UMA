@@ -5,23 +5,22 @@ use rodio::Sink;
 
 use std::time::Duration;
 
-// #[path = "style.rs"] mod style;
 use super::style;
 
+/// ### Summary
+/// Provides colourized output to text in the terminal. 
+/// 
+/// ### Detailed explanation
+/// With `stdout` from `let stdout = std::io::stdout()`, the cursor will move to (0, 1) in the terminal
+/// and the screen will be cleared, then with the colourized text will be printed onto the screen.
+/// The colour is determined by what RGB values set in the `style` struct
+/// 
+/// ### Example
+/// ```
+/// let colourized = style::Style::new([252, 2, 202]);
+/// style::stylized_output(&colourized, "Colourized text!".to_string());
+/// ```
 fn on_key_detect(style: &style::Style, text: &str, mut stdout: &std::io::Stdout) {
-    //! ### Summary
-    //! Provides colourized output to text in the terminal. 
-    //! 
-    //! ### Detailed explanation
-    //! With `stdout` from `let stdout = std::io::stdout()`, the cursor will move to (0, 1) in the terminal
-    //! and the screen will be cleared, then with the colourized text will be printed onto the screen.
-    //! The colour is determined by what RGB values set in the `style` struct
-    //! 
-    //! ### Example
-    //! ```
-    //! let colourized = style::Style::new([252, 2, 202]);
-    //! style::stylized_output(&colourized, "Colourized text!".to_string());
-    //! ```
     execute!(stdout, cursor::MoveTo(0, 1), Clear(ClearType::FromCursorDown)).unwrap();
     style::stylized_output(&style, text);
     println!();
@@ -34,7 +33,9 @@ fn on_key_detect(style: &style::Style, text: &str, mut stdout: &std::io::Stdout)
 // With the crossterm crate as a dependency, it will check whether or not there is keyboard input every
 /// second. If there is keyboard input then it'll continue, if not it will return from the funciton.
 pub fn detect(sink: &Sink, stdout: &std::io::Stdout, volume: f32){
-    let current_vol = style::Style::new([252, 2, 202]);
+    // TODO: Add a method to change the directory to look for files. 
+
+    let current_vol = style::Style(252, 2, 202);
 
     // Checking if there is a keyboard input every second, if it doesn't, then it'll return the function.
     if !poll(Duration::from_secs(1)).unwrap_or_default() { return; }
@@ -69,7 +70,7 @@ pub fn detect(sink: &Sink, stdout: &std::io::Stdout, volume: f32){
         }
 
         Event::Key(KeyEvent { code: KeyCode::Char('p'), .. }) => {
-            let pause_play_style = style::Style::new([252, 105, 20]);
+            let pause_play_style = style::Style(252, 105, 20);
             if sink.is_paused() {
                 on_key_detect(&pause_play_style, "Resuming audio playback.", stdout);
                 sink.play();
@@ -82,7 +83,7 @@ pub fn detect(sink: &Sink, stdout: &std::io::Stdout, volume: f32){
 
         Event::Key(KeyEvent { code: KeyCode::Esc, .. }) => {
             sink.stop();
-            let exit = style::Style::new([210, 118, 252]);
+            let exit = style::Style(210, 118, 252);
             style::stylized_output(&exit, "See you soon. Goodbye");
             println!();
             std::process::exit(200);

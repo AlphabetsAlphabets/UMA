@@ -10,7 +10,7 @@ use crossterm::terminal::{Clear, ClearType};
 
 use super::style;
 
-pub fn find_audio_files() -> Option<Vec<PathBuf>> {
+pub fn find_audio_directory() -> String {
     print!("Which folder do you want me to look for songs in? Supports absolute and relative paths.\n> ");
     stdout().flush().expect("Unable to flush.");
     
@@ -21,15 +21,19 @@ pub fn find_audio_files() -> Option<Vec<PathBuf>> {
 
     let directory = directory.trim();
 
-    let directory = Path::new(&directory);
+    let directory = Path::new(&directory).to_str().expect("Unable to convert to string.").to_owned();
 
+    return directory;
+}
+
+pub fn get_file_extension(directory: String) -> Option<Vec<PathBuf>> {
     let mut files = vec![];
-    let contents = read_dir(directory);
+    let contents = read_dir(&directory);
     let contents = match contents {
         Ok(directory) => directory,
         Err(_error) => {
-            let error_style = style::Style::new([244, 25, 9]);
-            let error_message = format!("{} is not a valid directory.", directory.display());
+            let error_style = style::Style(244, 25, 9);
+            let error_message = format!("{} is not a valid directory.", directory);
             style::stylized_output(&error_style, &error_message);
             return None;
         }
@@ -72,7 +76,7 @@ pub fn select_song(file_name: &[OsString], file_path: &[PathBuf]) -> Vec<PathBuf
 
         index += 1;
         let choose_song = format!("{}. {}", index, name);
-        let choose_song_style = style::Style::new([252, 242, 108]);
+        let choose_song_style = style::Style(252, 242, 108);
         style::stylized_output(&choose_song_style, &choose_song);
         println!();
     }

@@ -11,6 +11,7 @@ use std::path::PathBuf;
 mod style;
 mod key;
 mod files;
+mod config;
 
 /*
 TODO:
@@ -48,7 +49,7 @@ fn playback(file_to_play: &[PathBuf]) {
     let source = match source {
         Ok(source) => source,
         Err(_error) => {
-            let error_style = style::Style::new([244, 25, 9]);
+            let error_style = style::Style(244, 25, 9);
             style::stylized_output(&error_style, "The file you've chosen has an unrecognized format.");
             std::process::abort()
         }
@@ -66,19 +67,14 @@ fn playback(file_to_play: &[PathBuf]) {
     }
 }
 
-fn play() {
+fn play(file_path: &Vec<PathBuf>) {
     let mut stdout = stdout();
 
-    let file_path = files::find_audio_files();
-    let file_path = match file_path {
-        Some(file_path) => file_path,
-        None => std::process::abort()
-    };
     let file_name = files::get_song_names(&file_path[..]);
     let song_to_play = files::select_song(&file_name[..], &file_path[..]);
 
     let current_song = files::get_song_names(&song_to_play[..]);
-    let current_song_style = style::Style::new([135, 244, 9]);
+    let current_song_style = style::Style(135, 244, 9);
 
     // Convert: PathBuff -> OsStr -> OsString -> String, then match on Result
     let current_song = {
@@ -123,5 +119,16 @@ fn play() {
 }
 
 fn main() {
-    play();
+    let conf = config::modify_json();
+
+    let file_path = match files::get_file_extension(conf.dir) {
+        Some(file_path) => file_path,
+        None => std::process::abort()
+    };
+
+    if conf.first == 0 {
+        play(&file_path);
+    }
+
+    play(&file_path);
 }

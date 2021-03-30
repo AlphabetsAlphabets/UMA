@@ -6,19 +6,8 @@ use crossterm::{
     style::{Color, ResetColor, SetColors, Colors, Print}
 };
 
-pub struct Style {
-    /// Provides an easy way to setup RGB colour codes to colourized output text
-    fg: [u8; 3],
-}
-
-impl Style {
-    /// Provides an easy way to create an instance of Style
-    pub fn new(fg: [u8; 3]) -> Style {
-        Style {
-            fg,
-        }
-    }
-}
+/// Provides an easy way to setup RGB colour codes to colourized output text
+pub struct Style(pub u8, pub u8, pub u8);
 
 /// ### Summary
 /// Colourizes the text about to be printed onto the screen.alloc
@@ -34,9 +23,9 @@ impl Style {
 /// ```
 pub fn stylized_output(style: &Style, display_text: &str) {
     let fg = Color::Rgb { 
-        r: style.fg[0],
-        g: style.fg[1],
-        b: style.fg[2],
+        r: style.0,
+        g: style.1,
+        b: style.2
     };
     
     let bg = Color::Rgb{
