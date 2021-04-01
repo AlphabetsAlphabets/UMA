@@ -26,3 +26,6 @@ Press ESC to exit.
 
 ### Pausing/Playing
 Just press P. It'll know how to alternate.
+
+# Note
+It is unsure whether or not this application is suppported on Windows. 
