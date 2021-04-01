@@ -28,4 +28,4 @@ Press ESC to exit.
 Just press P. It'll know how to alternate.
 
 # Note
-It is unsure whether or not this application is suppported on Windows. 
+It is unsure whether or not this application is suppported on Windows. If there is an issue, feel free to make an issue.
