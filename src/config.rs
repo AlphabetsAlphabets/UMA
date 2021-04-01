@@ -13,9 +13,8 @@ pub struct Config {
     pub first: u8
 }
 
-
 pub fn deserialize_json() -> Config {
-    let content = fs::read_to_string("src/confs/startup.json").expect("Unable to open file.");
+    let content = fs::read_to_string("./src/confs/startup.json").expect("Unable to open JSON config file.");
     let json: Config = serde_json::from_str(&content).expect("Unable to parse JSON.");
 
     json
