@@ -3,12 +3,6 @@ This is just a personal project I made for fun, I refactored it to Rust instead,
 
 This is a terminal music player, with slight TUI elements. It plays music from your local machine.
 
-# Installation
-Simply run `git clone https://github.com/YJH16120/UMA` then cd in UMA `cd UMA`,
-then run `cargo build --release` once you've cloned the repository.
-
-Feel free to add the binary to your path.
-
 # Usage
 ### Select a directory to look for audio files
 UMA needs to know which directory to look for songs it. Simply specify either the absolute or relative path.
