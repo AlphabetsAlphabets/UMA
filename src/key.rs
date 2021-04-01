@@ -1,11 +1,12 @@
 use crossterm::event::{read, KeyEvent, KeyCode, Event, poll};
-use crossterm::terminal::{Clear, ClearType};
+use crossterm::terminal::{Clear, ClearType, enable_raw_mode};
 use crossterm::{execute, cursor};
 use rodio::Sink;
 
 use std::time::Duration;
 
 use super::style;
+
 
 /// ### Summary
 /// Provides colourized output to text in the terminal.
@@ -21,7 +22,7 @@ use super::style;
 /// style::stylized_output(&colourized, "Colourized text!".to_string());
 /// ```
 fn on_key_detect(style: &style::Style, text: &str, mut stdout: &std::io::Stdout) {
-    execute!(stdout, cursor::MoveTo(0, 1), Clear(ClearType::FromCursorDown)).unwrap();
+    execute!(stdout, cursor::MoveTo(0, 1), Clear(ClearType::FromCursorDown)).expect("Unable to execute.");
     style::stylized_output(&style, text);
     println!();
 }
@@ -32,7 +33,7 @@ fn on_key_detect(style: &style::Style, text: &str, mut stdout: &std::io::Stdout)
 // ### Detailed explanation
 // With the crossterm crate as a dependency, it will check whether or not there is keyboard input every
 /// second. If there is keyboard input then it'll continue, if not it will return from the funciton.
-pub fn detect(sink: &Sink, stdout: &std::io::Stdout, volume: f32){
+pub fn detect(sink: &Sink, mut stdout: &std::io::Stdout, volume: f32){
     /*
     TODO: Add a method to change the directory to look for files.
     Bug: There is an issue in linux (ubuntu specfically), where you are not able to detect keyboard
@@ -41,8 +42,11 @@ pub fn detect(sink: &Sink, stdout: &std::io::Stdout, volume: f32){
 
     let current_vol = style::Style(252, 2, 202);
 
+    enable_raw_mode().expect("unable to enable raw mode.");
+    execute!(stdout, cursor::Hide, cursor::MoveTo(0, 1)).expect("unable to execute.");
     // Checking if there is a keyboard input every second, if it doesn't, then it'll return the function.
     if !poll(Duration::from_secs(1)).unwrap_or_default() { return; }
+
     match read().expect("Unable to read keyboard inputs.") {
         Event::Key(KeyEvent { code: KeyCode::Char('j'), .. }) => {
             if volume == 0.0 {
@@ -88,8 +92,11 @@ pub fn detect(sink: &Sink, stdout: &std::io::Stdout, volume: f32){
         Event::Key(KeyEvent { code: KeyCode::Esc, .. }) => {
             sink.stop();
             let exit = style::Style(210, 118, 252);
+            execute!(stdout, cursor::MoveTo(0, 1)).expect("Unable to execute.");
             style::stylized_output(&exit, "See you soon. Goodbye");
             println!();
+
+            execute!(stdout, cursor::Show).expect("Unable to show cursor");
             std::process::exit(200);
         }
         _ => ()

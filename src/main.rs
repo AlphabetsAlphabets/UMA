@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::BufReader;
 
 use rodio::Sink;
-use crossterm::terminal::{Clear, ClearType};
+use crossterm::terminal::{Clear, ClearType, disable_raw_mode};
 use crossterm::{execute, cursor};
 
 use std::path::PathBuf;
@@ -23,12 +23,12 @@ TODO:
 
 /// ### Summary
 /// Plays the select audio file via the provided file path
-/// 
+///
 /// ### Detailed explanation
 /// It creates an audio source from the result of `File::open(file_to_play)`, appends it to the sink
 /// and plays the audio file. It can also detect keyboard inputs while audio is playing, this is used to
 /// control the volume, and to exit the player.
-/// 
+///
 /// ### An example
 /// ```
 /// let path_to_audio_file = <path to audio file>.to_string();
@@ -65,6 +65,8 @@ fn playback(file_to_play: &[PathBuf]) {
         key::detect(&sink, &mut stdout, volume);
         if sink.empty() { break; }
     }
+    disable_raw_mode().expect("Unable to disable raw mode.");
+    execute!(stdout, cursor::Show).expect("unable to show cursor");
 }
 
 fn play(file_path: &Vec<PathBuf>) {
