@@ -1,12 +1,11 @@
-use crossterm::event::{read, KeyEvent, KeyCode, Event, poll};
-use crossterm::terminal::{Clear, ClearType, enable_raw_mode};
-use crossterm::{execute, cursor};
+use crossterm::event::{poll, read, Event, KeyCode, KeyEvent};
+use crossterm::terminal::{enable_raw_mode, Clear, ClearType};
+use crossterm::{cursor, execute};
 use rodio::Sink;
 
 use std::time::Duration;
 
 use super::style;
-
 
 /// ### Summary
 /// Provides colourized output to text in the terminal.
@@ -22,7 +21,12 @@ use super::style;
 /// style::stylized_output(&colourized, "Colourized text!".to_string());
 /// ```
 fn on_key_detect(style: &style::Style, text: &str, mut stdout: &std::io::Stdout) {
-    execute!(stdout, cursor::MoveTo(0, 1), Clear(ClearType::FromCursorDown)).expect("Unable to execute.");
+    execute!(
+        stdout,
+        cursor::MoveTo(0, 1),
+        Clear(ClearType::FromCursorDown)
+    )
+    .expect("Unable to execute.");
     style::stylized_output(&style, text);
     println!();
 }
@@ -33,7 +37,7 @@ fn on_key_detect(style: &style::Style, text: &str, mut stdout: &std::io::Stdout)
 // ### Detailed explanation
 // With the crossterm crate as a dependency, it will check whether or not there is keyboard input every
 /// second. If there is keyboard input then it'll continue, if not it will return from the funciton.
-pub fn detect(sink: &Sink, mut stdout: &std::io::Stdout, volume: f32){
+pub fn detect(sink: &Sink, mut stdout: &std::io::Stdout, volume: f32) {
     /*
     TODO: Add a method to change the directory to look for files.
     Bug: There is an issue in linux (ubuntu specfically), where you are not able to detect keyboard
@@ -45,10 +49,15 @@ pub fn detect(sink: &Sink, mut stdout: &std::io::Stdout, volume: f32){
     enable_raw_mode().expect("unable to enable raw mode.");
     execute!(stdout, cursor::Hide, cursor::MoveTo(0, 1)).expect("unable to execute.");
     // Checking if there is a keyboard input every second, if it doesn't, then it'll return the function.
-    if !poll(Duration::from_secs(1)).unwrap_or_default() { return; }
+    if !poll(Duration::from_secs(1)).unwrap_or_default() {
+        return;
+    }
 
     match read().expect("Unable to read keyboard inputs.") {
-        Event::Key(KeyEvent { code: KeyCode::Char('j'), .. }) => {
+        Event::Key(KeyEvent {
+            code: KeyCode::Char('j'),
+            ..
+        }) => {
             if volume == 0.0 {
                 let status = "Volume already at 0";
                 on_key_detect(&current_vol, status, stdout);
@@ -62,9 +71,13 @@ pub fn detect(sink: &Sink, mut stdout: &std::io::Stdout, volume: f32){
             on_key_detect(&current_vol, &status, stdout);
         }
 
-        Event::Key(KeyEvent { code: KeyCode::Char('k'), .. }) => {
+        Event::Key(KeyEvent {
+            code: KeyCode::Char('k'),
+            ..
+        }) => {
             let new_volume = volume + 0.25;
-            if volume == 2.0 { // Caps volume at 4, don't want it to burst my ear drums
+            if volume == 2.0 {
+                // Caps volume at 4, don't want it to burst my ear drums
                 let status = "Volume is maxed out at 2.0";
                 on_key_detect(&current_vol, status, stdout);
                 return;
@@ -77,28 +90,32 @@ pub fn detect(sink: &Sink, mut stdout: &std::io::Stdout, volume: f32){
             on_key_detect(&current_vol, &status, stdout);
         }
 
-        Event::Key(KeyEvent { code: KeyCode::Char('p'), .. }) => {
+        Event::Key(KeyEvent {
+            code: KeyCode::Char('p'),
+            ..
+        }) => {
             let pause_play_style = style::Style(252, 105, 20);
             if sink.is_paused() {
                 on_key_detect(&pause_play_style, "Resuming audio playback.", stdout);
                 sink.play();
-            }
-            else {
+            } else {
                 on_key_detect(&pause_play_style, "Halting audio playback.", stdout);
                 sink.pause();
             }
         }
 
-        Event::Key(KeyEvent { code: KeyCode::Esc, .. }) => {
+        Event::Key(KeyEvent {
+            code: KeyCode::Esc, ..
+        }) => {
             sink.stop();
             let exit = style::Style(210, 118, 252);
-            execute!(stdout, cursor::MoveTo(0, 1)).expect("Unable to execute.");
+            execute!(stdout, Clear(ClearType::All), cursor::MoveTo(0, 0)).expect("Unable to execute.");
             style::stylized_output(&exit, "See you soon. Goodbye");
             println!();
 
             execute!(stdout, cursor::Show).expect("Unable to show cursor");
             std::process::exit(200);
         }
-        _ => ()
+        _ => (),
     }
 }

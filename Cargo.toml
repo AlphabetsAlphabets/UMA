@@ -1,5 +1,5 @@
 [package]
-name = "untitled_media_app"
+name = "uma"
 version = "0.1.0"
 authors = ["YJH16120 <yapjiahong2003@gmail.com>"]
 edition = "2018"
@@ -12,3 +12,4 @@ crossterm = "0.19.0"
 serde = "1.0.117"
 serde_derive = "1.0"
 serde_json = "1.0.64"
+directories-next = "2.0.0"
