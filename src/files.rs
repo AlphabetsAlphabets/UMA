@@ -1,19 +1,20 @@
-use std::fs::read_dir;
-use std::io::{stdout, stdin, Write};
 use std::clone::Clone;
+use std::fs::{read_dir, OpenOptions};
+use std::io::{stdin, stdout, Write};
 
 use std::ffi::OsString;
-use std::path::{PathBuf, Path};
+use std::path::{Path, PathBuf};
 
-use crossterm::{execute, cursor};
 use crossterm::terminal::{Clear, ClearType};
+use crossterm::{cursor, execute};
 
+use super::config;
 use super::style;
 
 pub fn find_audio_directory() -> String {
     print!("Which folder do you want me to look for songs in? Supports absolute and relative paths.\n> ");
     stdout().flush().expect("Unable to flush.");
-    
+
     let mut directory = String::new();
     stdin()
         .read_line(&mut directory)
@@ -21,7 +22,10 @@ pub fn find_audio_directory() -> String {
 
     let directory = directory.trim();
 
-    let directory = Path::new(&directory).to_str().expect("Unable to convert to string.").to_owned();
+    let directory = Path::new(&directory)
+        .to_str()
+        .expect("Unable to convert to string.")
+        .to_owned();
 
     return directory;
 }
@@ -34,14 +38,43 @@ pub fn get_file_extension(directory: String) -> Option<Vec<PathBuf>> {
         Err(_error) => {
             let error_style = style::Style(244, 25, 9);
             let error_message = format!("{} is not a valid directory.", directory);
+
+            let help_style = style::Style(32, 252, 226);
+
+            let dir = config::get_config_dir();
+            let json = config::Config {
+                first: 1,
+                dir: "".to_string(),
+            };
+
+            let dir = format!("{}/startup.json", dir.to_owned().display());
+
+            let data = serde_json::to_string(&json).expect("unable to serialize struct.");
+            let mut file = OpenOptions::new()
+                .read(true)
+                .write(true)
+                .create(true)
+                .truncate(true)
+                .open(dir)
+                .expect("Unable to create file object with desired permissions.");
+
+            file.write_all(data.as_bytes())
+                .expect("Unable to write to file.");
+
             style::stylized_output(&error_style, &error_message);
+            println!();
+            style::stylized_output(&help_style, "Help: Did you end the file path with a '/'?");
+            println!();
+
             return None;
         }
     };
 
     for content in contents {
-        let file_name =  content.expect("Unable to read dir.").path();
-        let extension = file_name.extension().expect("File does not have an extension.");
+        let file_name = content.expect("Unable to read dir.").path();
+        let extension = file_name
+            .extension()
+            .expect("File does not have an extension.");
 
         if extension == "mp3" || extension == "wav" {
             files.push(file_name);
@@ -65,13 +98,14 @@ pub fn get_song_names(songs: &[PathBuf]) -> Vec<OsString> {
 pub fn select_song(file_name: &[OsString], file_path: &[PathBuf]) -> Vec<PathBuf> {
     let mut stdout = stdout();
     // Look into queues instead of execute
-    execute!(stdout, cursor::MoveTo(0, 0), Clear(ClearType::All)).expect("Unable to execute crossterm functions");
+    execute!(stdout, cursor::MoveTo(0, 0), Clear(ClearType::All))
+        .expect("Unable to execute crossterm functions");
 
     for (mut index, name) in file_name.iter().enumerate() {
         let name = name.clone().into_string();
         let name = match name {
             Ok(name) => name,
-            Err(_error) => panic!("Unable to retrieve string from OsString.")
+            Err(_error) => panic!("Unable to retrieve string from OsString."),
         };
 
         index += 1;
@@ -86,7 +120,10 @@ pub fn select_song(file_name: &[OsString], file_path: &[PathBuf]) -> Vec<PathBuf
         .read_line(&mut response)
         .expect("Failed to read line.");
 
-    let mut song = response.trim().parse::<usize>().expect("Unable to convert to int");
+    let mut song = response
+        .trim()
+        .parse::<usize>()
+        .expect("Unable to convert to int");
     song -= 1;
     let song_name = (&file_path[song]).to_owned();
 
