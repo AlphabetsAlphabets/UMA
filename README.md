@@ -6,7 +6,7 @@ This is a terminal music player, with slight TUI elements. It plays music from y
 # Installation
 There are two methods to install:
 1. UMA either through the source code,
-2. The releases page.
+2. The [releases](https://github.com/YJH16120/UMA/releases/tag/v1.0.0) page.
 
 ### Downloading through the source code
 Simply execute these commands:
@@ -19,7 +19,7 @@ mv target/release/uma `path`
 Where `path` is your path, to find out which folders are in your path simply perform `echo $PATH`.
 
 ### Downloading through the releases
-Simpley go to this page, download the file some where on your system then run the following commands:
+Simpley go to [this](https://github.com/YJH16120/UMA/releases/tag/v1.0.0) page, download the file some where on your system then run the following commands:
 ```
 mv path/to/uma/binary `path`
 ```
