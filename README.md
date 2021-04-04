@@ -1,5 +1,5 @@
 # Untitled Media Player (UMA)
-![](file://Images/UMA.png?raw=true)  
+![](Images/UMA.png)  
 
 This is just a personal project I made for fun, I refactored it to Rust instead, because I believe that it's easier to make this with Rust than with something like Python.
 
