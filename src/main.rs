@@ -144,5 +144,4 @@ fn main() {
         play(&file_path);
     }
     play(&file_path);
-
 }
