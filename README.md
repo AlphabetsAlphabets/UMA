@@ -1,4 +1,5 @@
 # Untitled Media Player (UMA)
+![Logo](UMA.png "Logo")
 This is just a personal project I made for fun, I refactored it to Rust instead, because I believe that it's easier to make this with Rust than with something like Python.
 
 This is a terminal music player, with slight TUI elements. It plays music from your local machine.
