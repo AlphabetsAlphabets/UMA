@@ -1,10 +1,11 @@
-use crossterm::event::{poll, read, Event, KeyCode, KeyEvent};
+use crossterm::event::{poll, read, Event, KeyCode, KeyEvent, KeyModifiers};
 use crossterm::terminal::{enable_raw_mode, Clear, ClearType};
 use crossterm::{cursor, execute};
 use rodio::Sink;
 
 use std::time::Duration;
 
+use super::config;
 use super::style;
 
 /// ### Summary
@@ -109,13 +110,31 @@ pub fn detect(sink: &Sink, mut stdout: &std::io::Stdout, volume: f32) {
         }) => {
             sink.stop();
             let exit = style::Style(210, 118, 252);
-            execute!(stdout, Clear(ClearType::All), cursor::MoveTo(0, 0)).expect("Unable to execute.");
+            execute!(stdout, Clear(ClearType::All), cursor::MoveTo(0, 0))
+                .expect("Unable to execute.");
             style::stylized_output(&exit, "See you soon. Goodbye");
             println!();
 
             execute!(stdout, cursor::Show).expect("Unable to show cursor");
             std::process::exit(200);
         }
+
+        Event::Key(KeyEvent {
+            code: KeyCode::Char('C'),
+            modifiers: KeyModifiers::SHIFT,
+        }) => {
+            sink.stop();
+            config::reset_json();
+
+            execute!(stdout, cursor::Show).expect("Unable to execute.");
+
+            let reset_style = style::Style(255, 255, 255);
+            let reset_message = "Go ahead and restart uma.";
+            style::stylized_output(&reset_style, reset_message);
+
+            std::process::abort();
+        }
+
         _ => (),
     }
 }

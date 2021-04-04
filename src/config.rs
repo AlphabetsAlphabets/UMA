@@ -67,6 +67,27 @@ pub fn first_time_setup(json: &Config) -> bool {
     }
 }
 
+pub fn reset_json() {
+    let dir = get_config_dir();
+    let dir = format!("{}/startup.json", dir.display());
+    let json = Config {
+        first: 1,
+        dir: "".to_string(),
+    };
+
+    let mut file = OpenOptions::new()
+        .truncate(true)
+        .write(true)
+        .open(dir)
+        .expect("Unable to reset json file.");
+
+    let json =
+        serde_json::to_string_pretty(&json).expect("Unable to serialize struct. In reset_json()");
+
+    file.write_all(json.as_bytes())
+        .expect("Unable to reset json.");
+}
+
 pub fn modify_json() -> Config {
     let dir = get_config_dir();
 
@@ -90,7 +111,6 @@ pub fn modify_json() -> Config {
 
     let mut file = OpenOptions::new()
         .write(true)
-        .read(true)
         .open(dir)
         .expect("Unable to open file with permissions.");
 
