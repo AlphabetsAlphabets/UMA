@@ -134,6 +134,12 @@ pub fn detect(sink: &Sink, mut stdout: &std::io::Stdout, volume: f32) {
 
             std::process::abort();
         }
+        Event::Key(KeyEvent {
+            code: KeyCode::Char('c'),
+            ..
+        }) => {
+            sink.stop();
+        }
 
         _ => (),
     }
