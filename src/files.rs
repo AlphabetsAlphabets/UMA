@@ -12,7 +12,7 @@ use super::config;
 use super::style;
 
 pub fn find_audio_directory() -> String {
-    print!("Which folder do you want me to look for songs in? Supports absolute and relative paths.\n> ");
+    print!("Which folder do you want me to look for songs in?.\n> ");
     stdout().flush().expect("Unable to flush.");
 
     let mut directory = String::new();
@@ -22,6 +22,7 @@ pub fn find_audio_directory() -> String {
 
     let directory = directory.trim();
 
+    // Creates a Path, converts it to a string, then converts &str -> String
     let directory = Path::new(&directory)
         .to_str()
         .expect("Unable to convert to string.")
@@ -32,6 +33,8 @@ pub fn find_audio_directory() -> String {
 
 pub fn get_file_extension(directory: String) -> Option<Vec<PathBuf>> {
     let mut files = vec![];
+
+    // Read the contents of the directory
     let contents = read_dir(&directory);
     let contents = match contents {
         Ok(directory) => directory,
@@ -63,7 +66,7 @@ pub fn get_file_extension(directory: String) -> Option<Vec<PathBuf>> {
 
             style::stylized_output(&error_style, &error_message);
             println!();
-            style::stylized_output(&help_style, "Help: Did you end the file path with a '/'?");
+            style::stylized_output(&help_style, "Help: Did you end the file path without a '/'?");
             println!();
 
             return None;

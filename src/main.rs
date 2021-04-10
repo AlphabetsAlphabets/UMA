@@ -13,14 +13,6 @@ mod files;
 mod key;
 mod style;
 
-/*
-TODO:
-    1. Add a pretty selection screen.
-    2. Move doc to outside the function.
-    3. Look into ? instead of using unwrap.
-    4. Change executes to queue (crossterm)
-*/
-
 /// ### Summary
 /// Plays the select audio file via the provided file path
 ///
