@@ -9,7 +9,7 @@ edition = "2018"
 [dependencies]
 rodio = "0.13.0"
 crossterm = "0.19.0"
-serde = "1.0.117"
+serde = { version = "1.0", features = ["derive"] }
 serde_derive = "1.0"
 serde_json = "1.0.64"
 directories-next = "2.0.0"

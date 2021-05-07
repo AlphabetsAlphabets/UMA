@@ -8,19 +8,6 @@ use std::time::Duration;
 use super::config;
 use super::style;
 
-/// ### Summary
-/// Provides colourized output to text in the terminal.
-///
-/// ### Detailed explanation
-/// With `stdout` from `let stdout = std::io::stdout()`, the cursor will move to (0, 1) in the terminal
-/// and the screen will be cleared, then with the colourized text will be printed onto the screen.
-/// The colour is determined by what RGB values set in the `style` struct
-///
-/// ### Example
-/// ```
-/// let colourized = style::Style::new([252, 2, 202]);
-/// style::stylized_output(&colourized, "Colourized text!".to_string());
-/// ```
 fn on_key_detect(style: &style::Style, text: &str, mut stdout: &std::io::Stdout) {
     execute!(
         stdout,
@@ -32,24 +19,12 @@ fn on_key_detect(style: &style::Style, text: &str, mut stdout: &std::io::Stdout)
     println!();
 }
 
-// ### Summray
-// Used to detect keyboard inputs to issue commands such as pause, play, and exit.
-//
-// ### Detailed explanation
-// With the crossterm crate as a dependency, it will check whether or not there is keyboard input every
-/// second. If there is keyboard input then it'll continue, if not it will return from the funciton.
 pub fn detect(sink: &Sink, mut stdout: &std::io::Stdout, volume: f32) {
-    /*
-    TODO: Add a method to change the directory to look for files.
-    Bug: There is an issue in linux (ubuntu specfically), where you are not able to detect keyboard
-    inputs without pressing enter. So you cannot perform any commands.
-    */
-
     let current_vol = style::Style(252, 2, 202);
 
     enable_raw_mode().expect("unable to enable raw mode.");
     execute!(stdout, cursor::Hide, cursor::MoveTo(0, 1)).expect("unable to execute.");
-    // Checking if there is a keyboard input every second, if it doesn't, then it'll return the function.
+    // Checking if there is a keyboard input every second, if it doesn't, then it'll return.
     if !poll(Duration::from_secs(1)).unwrap_or_default() {
         return;
     }
