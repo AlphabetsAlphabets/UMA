@@ -37,7 +37,7 @@ pub fn deserialize_json() -> Config {
 pub fn create_config() {
     let dir = get_config_dir();
 
-    let status = "Unable to created directory at (~/.config/uma)";
+    let status = "Unable to create directory at (~/.config/uma)";
     fs::create_dir(&dir).expect(status);
 
     let config_json = format!("{}/startup.json", dir.display());

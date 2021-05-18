@@ -33,7 +33,7 @@ You have the ability to change where UMA looks for files. There are two methods 
 UMA features basic commands, and they're inspired by vim motions.
 
 ### Volume control
-K to increase volume, J to decrease. Volume increments or decrements by 0.25.
+K to increase volume, J to decrease. Volume increments or decrements by 0.05.
 
 ### Exiting the player
 Press ESC to exit. 

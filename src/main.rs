@@ -13,23 +13,12 @@ mod files;
 mod key;
 mod style;
 
-/// ### Summary
-/// Plays the select audio file via the provided file path
-///
-/// ### Detailed explanation
-/// It creates an audio source from the result of `File::open(file_to_play)`, appends it to the sink
-/// and plays the audio file. It can also detect keyboard inputs while audio is playing, this is used to
-/// control the volume, and to exit the player.
-///
-/// ### An example
-/// ```
-/// let path_to_audio_file = <path to audio file>.to_string();
-/// playback(&path_to_audio_file);
-/// ```
 fn playback(file_to_play: &[PathBuf]) {
     let mut stdout = stdout();
-    let (_stream, stream_handle) =
-        { rodio::OutputStream::try_default().expect("Unable to create output stream from file.") };
+    let (_stream, stream_handle) = {
+        rodio::OutputStream::try_default()
+            .expect("Unable to create output stream from file.")
+    };
 
     let file_path = file_to_play[0].as_path();
 
@@ -86,8 +75,8 @@ fn play(file_path: &Vec<PathBuf>) {
         stdout,
         cursor::MoveTo(0, 0),
         Clear(ClearType::FromCursorDown)
-    )
-    .expect("Unable to execute crossterm functions");
+    ).expect("Unable to execute crossterm functions");
+
     let current_song = format!("Currently playing: {}", current_song);
     style::stylized_output(&current_song_style, &current_song);
     println!();
@@ -98,7 +87,8 @@ fn play(file_path: &Vec<PathBuf>) {
         let file_name = files::get_song_names(&file_path);
         let song_to_play = files::select_song(&file_name, &file_path);
 
-        // If you pass in a vec with only one element, it doesn't pass the value in...
+        // If you pass in a vec with only one element, it doesn't pass the value in.
+        // I found out the hard way :D
         let current_song = files::get_song_names(&song_to_play[..]);
         let current_song = {
             current_song[0]
@@ -127,7 +117,8 @@ fn play(file_path: &Vec<PathBuf>) {
 fn main() {
     let conf = config::modify_json();
 
-    let file_path = match files::get_file_extension(conf.dir) {
+    let file_path = files::get_file_extension(conf.dir);
+    let file_path = match file_path {
         Some(file_path) => file_path,
         None => std::process::abort(),
     };
