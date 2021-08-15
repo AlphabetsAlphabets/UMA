@@ -1,4 +1,5 @@
 use directories_next::ProjectDirs;
+
 use std::fs;
 use std::fs::OpenOptions;
 use std::io::prelude::*;
@@ -91,20 +92,16 @@ pub fn reset_json() {
 pub fn modify_json() -> Config {
     let dir = get_config_dir();
 
-    let does_config_exist = Path::new(&dir).exists();
-    if !does_config_exist {
+    if !Path::new(&dir).exists() {
         create_config();
     }
 
     let mut json = deserialize_json();
-    let is_first_time = first_time_setup(&json);
-
-    if !is_first_time {
+    if first_time_setup(&json) {
         return json;
     }
 
-    let directory = files::find_audio_directory();
-    json.dir = directory;
+    json.dir = files::find_audio_directory();
     json.first = 0;
 
     let dir = format!("{}/startup.json", dir.display());

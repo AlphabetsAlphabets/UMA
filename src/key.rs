@@ -51,13 +51,13 @@ pub fn detect(sink: &Sink, mut stdout: &std::io::Stdout, volume: f32) {
             code: KeyCode::Char('k'),
             ..
         }) => {
-            let new_volume = volume + 0.05;
             if volume == 2.0 {
                 // Caps volume at 4, don't want it to burst my ear drums
                 let status = "Volume is maxed out at 2.0";
                 on_key_detect(&current_vol, status, stdout);
                 return;
             }
+            let new_volume = volume + 0.05;
             sink.set_volume(new_volume);
 
             let new_volume = sink.volume().to_string();

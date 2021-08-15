@@ -22,13 +22,13 @@ pub fn find_audio_directory() -> String {
 
     let directory = directory.trim();
 
-    // Creates a Path, converts it to a string, then converts &str -> String
+    // Creates a Path, converts it to a string, then converts &str to String
     let directory = Path::new(&directory)
         .to_str()
         .expect("Unable to convert to string.")
         .to_owned();
 
-    return directory;
+    directory
 }
 
 pub fn get_file_extension(directory: String) -> Option<Vec<PathBuf>> {
@@ -40,7 +40,7 @@ pub fn get_file_extension(directory: String) -> Option<Vec<PathBuf>> {
         Ok(directory) => directory,
         Err(_error) => {
             let error_style = style::Style(244, 25, 9);
-            let error_message = format!("{} is not a valid directory.", directory);
+            let error_message = format!("{} is not a valid directory.\n", directory);
 
             let help_style = style::Style(32, 252, 226);
 
@@ -65,9 +65,7 @@ pub fn get_file_extension(directory: String) -> Option<Vec<PathBuf>> {
                 .expect("Unable to write to file.");
 
             style::stylized_output(&error_style, &error_message);
-            println!();
-            style::stylized_output(&help_style, "Help: Did you end the file path without a '/'?");
-            println!();
+            style::stylized_output(&help_style, "Help: Did you end the file path without a '/'?\n");
 
             return None;
         }
@@ -127,11 +125,12 @@ pub fn select_song(file_name: &[OsString], file_path: &[PathBuf]) -> Vec<PathBuf
         .trim()
         .parse::<usize>()
         .expect("Unable to convert to int");
+
     song -= 1;
     let song_name = (&file_path[song]).to_owned();
 
     let mut song_names: Vec<PathBuf> = vec![];
     song_names.push(song_name);
 
-    return song_names;
+    song_names
 }

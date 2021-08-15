@@ -56,10 +56,10 @@ fn playback(file_to_play: &[PathBuf]) {
 fn play(file_path: &Vec<PathBuf>) {
     let mut stdout = stdout();
 
-    let file_name = files::get_song_names(&file_path[..]);
-    let song_to_play = files::select_song(&file_name[..], &file_path[..]);
+    let file_name = files::get_song_names(&file_path);
+    let song_to_play = files::select_song(&file_name, &file_path);
 
-    let current_song = files::get_song_names(&song_to_play[..]);
+    let current_song = files::get_song_names(&song_to_play);
     let current_song_style = style::Style(135, 244, 9);
 
     // Convert: PathBuff -> OsStr -> OsString -> String, then match on Result
@@ -81,7 +81,7 @@ fn play(file_path: &Vec<PathBuf>) {
     style::stylized_output(&current_song_style, &current_song);
     println!();
 
-    playback(&song_to_play[..]);
+    playback(&song_to_play);
 
     loop {
         let file_name = files::get_song_names(&file_path);
@@ -89,7 +89,7 @@ fn play(file_path: &Vec<PathBuf>) {
 
         // If you pass in a vec with only one element, it doesn't pass the value in.
         // I found out the hard way :D
-        let current_song = files::get_song_names(&song_to_play[..]);
+        let current_song = files::get_song_names(&song_to_play);
         let current_song = {
             current_song[0]
                 .as_os_str()
@@ -126,5 +126,6 @@ fn main() {
     if conf.first == 0 {
         play(&file_path);
     }
+
     play(&file_path);
 }
